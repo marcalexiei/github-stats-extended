@@ -68,7 +68,7 @@ const LoginStage = ({ setCurrItem }) => {
 
   return (
     <div className="h-full flex flex-wrap">
-      <div className="hidden lg:block lg:w-3/5 lg:p-8 lg:my-auto">
+      <div className="hidden lg:block lg:w-3/5 lg:p-8">
         <div
           className={classnames(
             'bg-gray-200 rounded-sm w-full h-full m-auto p-8 shadow',
@@ -249,7 +249,8 @@ const LoginStage = ({ setCurrItem }) => {
                 style={{
                   left: `${x}%`,
                   top: `${y}%`,
-                  transform: 'translate(-50%, -50%)',
+                  position: 'relative',
+                  // transform: 'translate(-50%, -50%)',
                   // width: '280px',
                 }}
               >
