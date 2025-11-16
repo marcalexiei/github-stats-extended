@@ -1,10 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Card } from '../../../components';
+import { Button, Card, Image } from '../../../components';
 import { classnames } from '../../../utils';
 import {
   GITHUB_PRIVATE_AUTH_URL,
@@ -66,28 +66,6 @@ const LoginStage = ({ setCurrItem }) => {
     },
   ];
 
-  // Animation state for each card
-  const [cardOffsets, setCardOffsets] = useState(
-    cards.map(() => ({ x: 0, y: 0 })),
-  );
-
-  // Subtle floating animation
-  useEffect(() => {
-    const intervals = cards.map((_, index) => {
-      return setInterval(() => {
-        setCardOffsets((prev) => {
-          const newOffsets = [...prev];
-          newOffsets[index] = {
-            x: Math.sin(Date.now() / 1000 + index) * 3,
-            y: Math.cos(Date.now() / 1500 + index * 0.5) * 3,
-          };
-          return newOffsets;
-        });
-      }, 50);
-    });
-
-    return () => intervals.forEach(clearInterval);
-  }, []);
   return (
     <div className="h-full flex flex-wrap">
       <div className="hidden lg:block lg:w-3/5 lg:p-8 lg:my-auto">
@@ -132,9 +110,9 @@ const LoginStage = ({ setCurrItem }) => {
                     <a
                       href={`https://${HOST}/api/downgrade?user_key=${userKey}`}
                     >
-                      <Button className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100">
+                      <Button className="h-12 flex justify-center items-center w-[320px] text-black border border-black bg-white hover:bg-gray-100">
                         <GithubIcon className="w-6 h-6" />
-                        <span className="xl:text-lg">
+                        <span className="ml-2 xl:text-lg">
                           Downgrade to Public Access
                         </span>
                       </Button>
@@ -147,9 +125,9 @@ const LoginStage = ({ setCurrItem }) => {
                 ) : (
                   <div className="flex items-center gap-4">
                     <a href={GITHUB_PRIVATE_AUTH_URL}>
-                      <Button className="h-12 flex justify-center items-center w-[260px] text-white bg-blue-500 hover:bg-blue-600">
+                      <Button className="h-12 flex justify-center items-center w-[320px] text-white bg-blue-500 hover:bg-blue-600">
                         <GithubIcon className="w-6 h-6" />
-                        <span className="xl:text-lg">
+                        <span className="ml-2 xl:text-lg">
                           Upgrade to Private Access
                         </span>
                       </Button>
@@ -165,7 +143,7 @@ const LoginStage = ({ setCurrItem }) => {
               {/* Logout Button */}
               <div className="mt-6 flex items-center gap-4">
                 <Button
-                  className="h-12 flex justify-center items-center w-[260px] text-black border border-black bg-white hover:bg-gray-100"
+                  className="h-12 flex justify-center items-center w-[320px] text-black border border-black bg-white hover:bg-gray-100"
                   onClick={logout}
                 >
                   <span className="xl:text-lg">Log Out</span>
@@ -233,6 +211,16 @@ const LoginStage = ({ setCurrItem }) => {
         </div>
       </div>
       <div className="w-full h-full lg:w-2/5 flex lg:flex-col lg:p-8 relative overflow-hidden">
+        <style>{`
+          @keyframes subtle-float {
+            0% { transform: translate(0px, 0px); }
+            25% { transform: translate(3px, -2px); }
+            50% { transform: translate(0px, 3px); }
+            75% { transform: translate(-3px, -2px); }
+            100% { transform: translate(0px, 0px); }
+          }
+          .floating-card { animation: subtle-float 7s ease-in-out infinite; }
+        `}</style>
         <div className="relative w-full h-full">
           {cards.map((card, index) => {
             // Calculate arch position
@@ -254,28 +242,27 @@ const LoginStage = ({ setCurrItem }) => {
             const x = centerX + radius * Math.cos(angle);
             const y = centerY + radius * Math.sin(angle);
 
-            // Add animation offset
-            const animX = x + cardOffsets[index].x;
-            const animY = y + cardOffsets[index].y;
-
             return (
               <div
                 key={index}
-                className="absolute transition-all duration-100 ease-out"
+                className="absolute"
                 style={{
-                  left: `${animX}px`,
-                  top: `${animY}px`,
+                  left: `${x}px`,
+                  top: `${y}px`,
                   transform: 'translate(-50%, -50%)',
                   width: '280px',
                 }}
               >
-                <Card
-                  title={card.title}
-                  description={card.description}
-                  imageSrc={card.imageSrc + card.demoCustomization}
-                  selected={false}
-                  fixedSize="true"
-                />
+                <div
+                  className="floating-card"
+                  style={{ animationDelay: `${index * 0.8}s` }}
+                >
+                  <Image
+                    imageSrc={card.imageSrc + card.demoCustomization}
+                    compact={false}
+                    extraClasses="rounded-md overflow-hidden"
+                  />
+                </div>
               </div>
             );
           })}
