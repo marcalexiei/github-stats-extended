@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Card, Image } from '../../../components';
+import { Button, Image } from '../../../components';
 import { classnames } from '../../../utils';
 import {
   GITHUB_PRIVATE_AUTH_URL,
@@ -226,9 +226,9 @@ const LoginStage = ({ setCurrItem }) => {
             // Calculate arch position
             // Arch center is far to the right (1500px to the right)
             // Radius of the arch
-            const radius = 800;
-            const centerX = 1500;
-            const centerY = 300;
+            const radius = 40;
+            const centerX = 50;
+            const centerY = 50;
 
             // Angle for each card (spreading them in an arch)
             // Cards arranged from top-left to bottom-left
@@ -245,12 +245,12 @@ const LoginStage = ({ setCurrItem }) => {
             return (
               <div
                 key={index}
-                className="absolute"
+                // className="absolute"
                 style={{
-                  left: `${x}px`,
-                  top: `${y}px`,
+                  left: `${x}%`,
+                  top: `${y}%`,
                   transform: 'translate(-50%, -50%)',
-                  width: '280px',
+                  // width: '280px',
                 }}
               >
                 <div
@@ -260,7 +260,7 @@ const LoginStage = ({ setCurrItem }) => {
                   <Image
                     imageSrc={card.imageSrc + card.demoCustomization}
                     compact={false}
-                    extraClasses="rounded-md overflow-hidden"
+                    extraClasses=""
                   />
                 </div>
               </div>
