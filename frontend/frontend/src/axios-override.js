@@ -15,7 +15,7 @@ cachedAxios.interceptors.request.use(
     const params = new URL(config.url).entries || {};
     if (
       params.username === 'anuraghazra' ||
-      params.repo.startsWith('anuraghazra/')
+      (params.repo && params.repo.startsWith('anuraghazra/'))
     ) {
       // Return a promise that resolves with a mocked response
       return Promise.resolve({
