@@ -12,8 +12,11 @@ const cachedAxios = setupCache(axios, {
 // mock username=anuraghazra requests
 cachedAxios.interceptors.request.use(
   (config) => {
-    const params = config.params || {};
-    if (params.username === 'anuraghazra') {
+    const params = new URL(config.url).entries || {};
+    if (
+      params.username === 'anuraghazra' ||
+      params.repo.startsWith('anuraghazra/')
+    ) {
       // Return a promise that resolves with a mocked response
       return Promise.resolve({
         data: 'hello anuraghazra!',

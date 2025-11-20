@@ -34,6 +34,7 @@ const HomeScreen = () => {
 
   // for all stages
   const [stage, setStage] = useState(isAuthenticated ? 1 : 0);
+  console.log('isAuthenticated: ', isAuthenticated, 'stage: ', stage);
 
   // for stage one
   const [selectedCard, setSelectedCard] = useState('stats');
