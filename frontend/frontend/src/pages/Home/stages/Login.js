@@ -41,7 +41,8 @@ const LoginStage = ({ setCurrItem }) => {
     },
     {
       imageSrc: '/wakatime?username=ffflabs',
-      demoCustomization: '&langs_count=6&card_width=450&disable_animations=true',
+      demoCustomization:
+        '&langs_count=6&card_width=450&disable_animations=true',
     },
     {
       imageSrc: '/gist?id=bbfce31e0217a3689c8d961a356cb10d',
