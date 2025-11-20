@@ -256,8 +256,8 @@ const HomeScreen = () => {
             </div>
             <div>
               {stage === 0 && isAuthenticated ? (
-                <div className="mb-6">
-                  <p className="text-lg text-gray-700 mb-2">
+                <div>
+                  <p>
                     You are logged in as{' '}
                     <a
                       href={`https://github.com/${userId}`}
@@ -268,16 +268,17 @@ const HomeScreen = () => {
                     </a>
                     .
                   </p>
-                  <p className="text-gray-600">
-                    Access Level:{' '}
-                    <strong>
-                      {privateAccess ? 'Private Access' : 'Public Access'}
-                    </strong>
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {privateAccess
-                      ? 'You have granted access to both public and private repositories.'
-                      : 'You have granted access to public repositories.'}
+                  <p>
+                    {privateAccess ? (
+                      <>
+                        You have granted access to both{' '}
+                        <b>public and private</b> repositories.
+                      </>
+                    ) : (
+                      <>
+                        You have granted access to <b>public</b> repositories.
+                      </>
+                    )}
                   </p>
                 </div>
               ) : (
