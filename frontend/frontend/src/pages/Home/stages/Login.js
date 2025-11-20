@@ -29,23 +29,23 @@ const LoginStage = ({ setCurrItem }) => {
   const cards = [
     {
       imageSrc: '/pin?repo=anuraghazra/github-readme-stats',
-      demoCustomization: '',
+      demoCustomization: '&disable_animations=true',
     },
     {
       imageSrc: '/top-langs?username=anuraghazra',
-      demoCustomization: '&langs_count=4',
+      demoCustomization: '&langs_count=4&disable_animations=true',
     },
     {
       imageSrc: '?username=anuraghazra',
-      demoCustomization: '&include_all_commits=true',
+      demoCustomization: '&include_all_commits=true&disable_animations=true',
     },
     {
       imageSrc: '/wakatime?username=ffflabs',
-      demoCustomization: '&langs_count=6&card_width=450',
+      demoCustomization: '&langs_count=6&card_width=450&disable_animations=true',
     },
     {
       imageSrc: '/gist?id=bbfce31e0217a3689c8d961a356cb10d',
-      demoCustomization: '',
+      demoCustomization: '&disable_animations=true',
     },
   ];
 
@@ -139,15 +139,6 @@ const LoginStage = ({ setCurrItem }) => {
           ) : (
             <>
               {/* User is not logged in - show login options */}
-              <div className="mb-6">
-                <p className="text-lg text-gray-700 mb-2">
-                  You are not logged in.
-                </p>
-                <p className="text-sm text-gray-500">
-                  Please choose an option below to continue.
-                </p>
-              </div>
-
               <div className="flex items-center gap-4 mb-4">
                 <a href={GITHUB_PUBLIC_AUTH_URL}>
                   <Button className="h-12 flex justify-center items-center w-[260px] text-white bg-blue-500 hover:bg-blue-600">
@@ -194,65 +185,33 @@ const LoginStage = ({ setCurrItem }) => {
         </div>
       </div>
       <div className="w-full h-full lg:w-2/5 flex lg:flex-col lg:p-8 relative overflow-hidden">
-        <style>{`
-          @keyframes subtle-float {
-            0% { transform: translate(0px, 0px); }
-            25% { transform: translate(3px, -2px); }
-            50% { transform: translate(0px, 3px); }
-            75% { transform: translate(-3px, -2px); }
-            100% { transform: translate(0px, 0px); }
-          }
-          .floating-card { animation: subtle-float 7s ease-in-out infinite; }
-        `}</style>
         <div className="relative w-full h-full">
           {cards.map((card, index) => {
-            // Calculate arch position
-            // Arch center is far to the right (1500px to the right)
-            // Radius of the arch
-            const radius = 40;
-            const centerX = 50;
-            const centerY = 50;
+            const radius = 60;
+            const centerX = 70;
+            const startAngle = Math.PI * 0.75; // 135 degrees
+            const endAngle = Math.PI * 1.25; // 225 degrees
 
-            // Angle for each card (spreading them in an arch)
-            // Cards arranged from top-left to bottom-left
-            const startAngle = Math.PI * 0.75; // ~135 degrees
-            const endAngle = Math.PI * 1.25; // ~225 degrees
             const angle =
               startAngle +
               (endAngle - startAngle) * (index / (cards.length - 1));
-
-            // Calculate position on the arch
             const x = centerX + radius * Math.cos(angle);
-            const y = centerY + radius * Math.sin(angle);
 
             return (
               <div
                 key={index}
-                // className="absolute"
                 style={{
                   left: `${x}%`,
-                  // top: `${y}%`,
                   position: 'relative',
                   zoom: '0.5',
                   marginBottom: '1%',
-                  // transform: 'translate(-50%, -50%)',
-                  // width: '280px',
                 }}
               >
-                {/*
-                <div
-                  className="floating-card"
-                  style={{ animationDelay: `${index * 0.8}s` }}
-                >
-*/}
                 <Image
                   imageSrc={card.imageSrc + card.demoCustomization}
                   compact={false}
                   extraClasses=""
                 />
-                {/*
-                </div>
-*/}
               </div>
             );
           })}

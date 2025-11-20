@@ -255,15 +255,40 @@ const HomeScreen = () => {
               }
             </div>
             <div>
-              {
+              {stage === 0 && isAuthenticated ? (
+                <div className="mb-6">
+                  <p className="text-lg text-gray-700 mb-2">
+                    You are logged in as{' '}
+                    <a
+                      href={`https://github.com/${userId}`}
+                      target="_blank"
+                      className="text-blue-500 hover:underline font-semibold"
+                    >
+                      {userId}
+                    </a>
+                    .
+                  </p>
+                  <p className="text-gray-600">
+                    Access Level:{' '}
+                    <strong>
+                      {privateAccess ? 'Private Access' : 'Public Access'}
+                    </strong>
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {privateAccess
+                      ? 'You have granted access to both public and private repositories.'
+                      : 'You have granted access to public repositories.'}
+                  </p>
+                </div>
+              ) : (
                 [
-                  'Login or continue as guest.',
+                  '',
                   'You will be able to customize your card in future steps.',
                   'Change the date range, include private commits, and more!',
                   'Choose from one of our predefined themes (more coming soon!)',
                   'Display your card on GitHub, Twitter, or Linkedin',
                 ][stage]
-              }
+              )}
             </div>
           </div>
           {stage === 0 && <LoginStage setCurrItem={setStage} />}
