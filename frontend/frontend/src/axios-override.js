@@ -48,51 +48,51 @@ axios.defaults.adapter = async (config) => {
     return defaultAdapter(config);
   }
 
-  const params = new URL(config.url).entries || {};
+  const params = config.data ? JSON.parse(config.data) : {};
 
   if (
     config.url === 'https://api.github.com/graphql' &&
-    config.data.query.includes(
+    params.query?.includes(
       'query userInfo($login: String!, $after: String, $includeMergedPullRequests:',
     ) &&
-    config.data.variables.login === 'anuraghazra'
+    params.variables?.login === 'anuraghazra'
   ) {
     return createMockResponse(userStats, config);
   }
 
   if (
     config.url === 'https://api.github.com/graphql' &&
-    config.data.query.includes(
+    params.query?.includes(
       'query userInfo($login: String!, $after: String, $ownerAffiliations:',
     ) &&
-    config.data.variables.login === 'anuraghazra'
+    params.variables?.login === 'anuraghazra'
   ) {
     return createMockResponse(additionalUserStars, config);
   }
 
   if (
     config.url === 'https://api.github.com/graphql' &&
-    config.data.query.includes(
+    params.query?.includes(
       'query userInfo($login: String!, $ownerAffiliations:',
     ) &&
-    config.data.variables.login === 'anuraghazra'
+    params.variables?.login === 'anuraghazra'
   ) {
     return createMockResponse(topLanguages, config);
   }
 
   if (
     config.url === 'https://api.github.com/graphql' &&
-    config.data.query.includes('fragment RepoInfo on Repository {') &&
-    config.data.variables.login === 'anuraghazra' &&
-    config.data.variables.repo === 'github-readme-stats'
+    params.query?.includes('fragment RepoInfo on Repository {') &&
+    params.variables?.login === 'anuraghazra' &&
+    params.variables?.repo === 'github-readme-stats'
   ) {
     return createMockResponse(repository, config);
   }
 
   if (
     config.url === 'https://api.github.com/graphql' &&
-    config.data.query.includes('query gistInfo(') &&
-    config.data.variables.gistName === 'bbfce31e0217a3689c8d961a356cb10d'
+    params.query?.includes('query gistInfo(') &&
+    params.variables?.gistName === 'bbfce31e0217a3689c8d961a356cb10d'
   ) {
     return createMockResponse(gist, config);
   }
