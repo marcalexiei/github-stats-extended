@@ -21,12 +21,13 @@ const cachedAxios = setupCache(axios, {
   methods: ['get', 'post'],
 });
 
-function createResolvedPromise(data, config) {
+function createMockResponse(data, config) {
   return Promise.resolve({
     data,
     status: 200,
     statusText: 'OK',
     headers: {},
+    request: {},
     config,
   });
 }
@@ -38,82 +39,79 @@ export function setUserId(newUserId) {
   userId = newUserId;
 }
 
+const defaultAdapter = axios.defaults.adapter;
+
 // mock responses to unauthenticated "anuraghazra" requests
-cachedAxios.interceptors.request.use(
-  (config) => {
-    const isAuthenticated = userId && userId.length > 0;
-    if (isAuthenticated) {
-      return config;
-    }
+axios.defaults.adapter = async (config) => {
+  const isAuthenticated = userId && userId.length > 0;
+  if (isAuthenticated) {
+    return defaultAdapter(config);
+  }
 
-    const params = new URL(config.url).entries || {};
+  const params = new URL(config.url).entries || {};
 
-    if (
-      config.url === 'https://api.github.com/graphql' &&
-      config.data.query.includes(
-        'query userInfo($login: String!, $after: String, $includeMergedPullRequests:',
-      ) &&
-      config.data.variables.login === 'anuraghazra'
-    ) {
-      return createResolvedPromise(userStats, config);
-    }
+  if (
+    config.url === 'https://api.github.com/graphql' &&
+    config.data.query.includes(
+      'query userInfo($login: String!, $after: String, $includeMergedPullRequests:',
+    ) &&
+    config.data.variables.login === 'anuraghazra'
+  ) {
+    return createMockResponse(userStats, config);
+  }
 
-    if (
-      config.url === 'https://api.github.com/graphql' &&
-      config.data.query.includes(
-        'query userInfo($login: String!, $after: String, $ownerAffiliations:',
-      ) &&
-      config.data.variables.login === 'anuraghazra'
-    ) {
-      return createResolvedPromise(additionalUserStars, config);
-    }
+  if (
+    config.url === 'https://api.github.com/graphql' &&
+    config.data.query.includes(
+      'query userInfo($login: String!, $after: String, $ownerAffiliations:',
+    ) &&
+    config.data.variables.login === 'anuraghazra'
+  ) {
+    return createMockResponse(additionalUserStars, config);
+  }
 
-    if (
-      config.url === 'https://api.github.com/graphql' &&
-      config.data.query.includes(
-        'query userInfo($login: String!, $ownerAffiliations:',
-      ) &&
-      config.data.variables.login === 'anuraghazra'
-    ) {
-      return createResolvedPromise(topLanguages, config);
-    }
+  if (
+    config.url === 'https://api.github.com/graphql' &&
+    config.data.query.includes(
+      'query userInfo($login: String!, $ownerAffiliations:',
+    ) &&
+    config.data.variables.login === 'anuraghazra'
+  ) {
+    return createMockResponse(topLanguages, config);
+  }
 
-    if (
-      config.url === 'https://api.github.com/graphql' &&
-      config.data.query.includes('fragment RepoInfo on Repository {') &&
-      config.data.variables.login === 'anuraghazra' &&
-      config.data.variables.repo === 'github-readme-stats'
-    ) {
-      return createResolvedPromise(repository, config);
-    }
+  if (
+    config.url === 'https://api.github.com/graphql' &&
+    config.data.query.includes('fragment RepoInfo on Repository {') &&
+    config.data.variables.login === 'anuraghazra' &&
+    config.data.variables.repo === 'github-readme-stats'
+  ) {
+    return createMockResponse(repository, config);
+  }
 
-    if (
-      config.url === 'https://api.github.com/graphql' &&
-      config.data.query.includes('query gistInfo(') &&
-      config.data.variables.login === 'anuraghazra'
-    ) {
-      return createResolvedPromise(gist, config);
-    }
+  if (
+    config.url === 'https://api.github.com/graphql' &&
+    config.data.query.includes('query gistInfo(') &&
+    config.data.variables.gistName === 'bbfce31e0217a3689c8d961a356cb10d'
+  ) {
+    return createMockResponse(gist, config);
+  }
 
-    switch (config.url) {
-      case 'https://api.github.com/search/commits?per_page=1&q=author:anuraghazra':
-        return createResolvedPromise(commits, config);
-      case 'https://api.github.com/search/issues?per_page=1&q=commenter:anuraghazra+-author:anuraghazra+type:pr':
-        return createResolvedPromise(commentedPrs, config);
-      case 'https://api.github.com/search/issues?per_page=1&q=reviewed-by:anuraghazra+-author:anuraghazra+type:pr':
-        return createResolvedPromise(reviewedPrs, config);
-      case 'https://api.github.com/search/issues?per_page=1&q=commenter:anuraghazra+-author:anuraghazra+type:issue':
-        return createResolvedPromise(commentedIssues, config);
-      case `https://${HOST}/api/wakatime-proxy?username=ffflabs`:
-        return createResolvedPromise(wakatimeProxy, config);
-      default:
-        return config;
-    }
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+  switch (config.url) {
+    case 'https://api.github.com/search/commits?per_page=1&q=author:anuraghazra':
+      return createMockResponse(commits, config);
+    case 'https://api.github.com/search/issues?per_page=1&q=commenter:anuraghazra+-author:anuraghazra+type:pr':
+      return createMockResponse(commentedPrs, config);
+    case 'https://api.github.com/search/issues?per_page=1&q=reviewed-by:anuraghazra+-author:anuraghazra+type:pr':
+      return createMockResponse(reviewedPrs, config);
+    case 'https://api.github.com/search/issues?per_page=1&q=commenter:anuraghazra+-author:anuraghazra+type:issue':
+      return createMockResponse(commentedIssues, config);
+    case `https://${HOST}/api/wakatime-proxy?username=ffflabs`:
+      return createMockResponse(wakatimeProxy, config);
+    default:
+      return defaultAdapter(config);
+  }
+};
 
 axios.get = cachedAxios.get.bind(cachedAxios);
 axios.post = cachedAxios.post.bind(cachedAxios);
