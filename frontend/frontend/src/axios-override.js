@@ -53,7 +53,7 @@ cachedAxios.interceptors.request.use(
       config.data.query.includes(
         'query userInfo($login: String!, $after: String, $includeMergedPullRequests:',
       ) &&
-      config.data.data.variables.login === 'anuraghazra'
+      config.data.variables.login === 'anuraghazra'
     ) {
       return createResolvedPromise(userStats, config);
     }
@@ -63,7 +63,7 @@ cachedAxios.interceptors.request.use(
       config.data.query.includes(
         'query userInfo($login: String!, $after: String, $ownerAffiliations:',
       ) &&
-      config.data.data.variables.login === 'anuraghazra'
+      config.data.variables.login === 'anuraghazra'
     ) {
       return createResolvedPromise(additionalUserStars, config);
     }
@@ -73,7 +73,7 @@ cachedAxios.interceptors.request.use(
       config.data.query.includes(
         'query userInfo($login: String!, $ownerAffiliations:',
       ) &&
-      config.data.data.variables.login === 'anuraghazra'
+      config.data.variables.login === 'anuraghazra'
     ) {
       return createResolvedPromise(topLanguages, config);
     }
@@ -81,8 +81,8 @@ cachedAxios.interceptors.request.use(
     if (
       config.url === 'https://api.github.com/graphql' &&
       config.data.query.includes('fragment RepoInfo on Repository {') &&
-      config.data.data.variables.login === 'anuraghazra' &&
-      config.data.data.variables.repo === 'github-readme-stats'
+      config.data.variables.login === 'anuraghazra' &&
+      config.data.variables.repo === 'github-readme-stats'
     ) {
       return createResolvedPromise(repository, config);
     }
@@ -90,7 +90,7 @@ cachedAxios.interceptors.request.use(
     if (
       config.url === 'https://api.github.com/graphql' &&
       config.data.query.includes('query gistInfo(') &&
-      config.data.data.variables.login === 'anuraghazra'
+      config.data.variables.login === 'anuraghazra'
     ) {
       return createResolvedPromise(gist, config);
     }
