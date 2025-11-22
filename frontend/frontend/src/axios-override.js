@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
-import { useSelector } from 'react-redux';
 import { HOST } from './constants';
 
 import additionalUserStars from './mockData/additional_user_stars.json' with { type: 'json' };
@@ -32,10 +31,16 @@ function createResolvedPromise(data, config) {
   });
 }
 
+// store userId outside React context so the interceptor can access it
+let userId = null;
+
+export function setUserId(newUserId) {
+  userId = newUserId;
+}
+
 // mock responses to unauthenticated "anuraghazra" requests
 cachedAxios.interceptors.request.use(
   (config) => {
-    const userId = useSelector((state) => state.user.userId);
     const isAuthenticated = userId && userId.length > 0;
     if (isAuthenticated) {
       return config;

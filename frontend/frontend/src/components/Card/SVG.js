@@ -11,6 +11,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 import { createMockReq, createMockRes } from '../../mock-http';
 import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
+import { setUserId } from '../../axios-override';
 
 const SvgInline = (props) => {
   const [svg, setSvg] = useState(null);
@@ -19,6 +20,11 @@ const SvgInline = (props) => {
   const userToken = useSelector((state) => state.user.token);
   const userId = useSelector((state) => state.user.userId);
   const { url } = props;
+
+  // provide userId to non-react code in axios-override.js
+  useEffect(() => {
+    setUserId(userId);
+  }, [userId]);
 
   useEffect(() => {
     const loadSvg = async () => {
