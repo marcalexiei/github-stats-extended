@@ -35,18 +35,17 @@ function createMockResponse(data, config) {
   });
 }
 
-// store userId outside React context so the interceptor can access it
-let userId = null;
+// store isAuthenticated outside React context so the interceptor can access it
+let isAuthenticated = null;
 
-export function setUserId(newUserId) {
-  userId = newUserId;
+export function setIsAuthenticated(newIsAuthenticated) {
+  isAuthenticated = newIsAuthenticated;
 }
 
 const defaultAdapter = getAdapter(axios.defaults.adapter);
 
 // mock responses to unauthenticated "anuraghazra" requests
 axios.defaults.adapter = async (config) => {
-  const isAuthenticated = userId && userId.length > 0;
   if (isAuthenticated) {
     return defaultAdapter(config);
   }

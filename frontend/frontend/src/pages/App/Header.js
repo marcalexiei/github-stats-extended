@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { GiHamburgerMenu as HamburgerIcon } from 'react-icons/gi';
 import { MdSettings as SettingsIcon } from 'react-icons/md';
 
 import { logout as _logout } from '../../redux/actions/userActions';
+import { useIsAuthenticated } from '../../redux/selectors/userSelectors';
 import appIcon from '../../assets/appLogo64.png';
 import { classnames } from '../../utils';
 import { GITHUB_PUBLIC_AUTH_URL } from '../../constants';
@@ -61,8 +62,7 @@ MobileLink.defaultProps = defaultProps;
 const Header = ({ mode }) => {
   const [toggle, setToggle] = useState(false);
 
-  const userId = useSelector((state) => state.user.userId);
-  const isAuthenticated = userId && userId.length > 0;
+  const isAuthenticated = useIsAuthenticated();
 
   const dispatch = useDispatch();
   const logout = () => dispatch(_logout());

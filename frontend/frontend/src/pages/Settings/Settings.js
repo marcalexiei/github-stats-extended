@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '../../components';
 import { logout as _logout } from '../../redux/actions/userActions';
+import {
+  useUserId,
+  useUserKey,
+  useIsAuthenticated,
+  usePrivateAccess,
+} from '../../redux/selectors/userSelectors';
 import { deleteAccount } from '../../api';
 import { classnames } from '../../utils';
 import { CLIENT_ID, GITHUB_PRIVATE_AUTH_URL, HOST } from '../../constants';
@@ -70,10 +76,10 @@ const SettingsScreen = () => {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, closeDeleteModal);
 
-  const userId = useSelector((state) => state.user.userId);
-  const isAuthenticated = userId && userId.length > 0;
-  const userKey = useSelector((state) => state.user.userKey);
-  const privateAccess = useSelector((state) => state.user.privateAccess);
+  const userId = useUserId();
+  const userKey = useUserKey();
+  const isAuthenticated = useIsAuthenticated();
+  const privateAccess = usePrivateAccess();
   const accountTier = privateAccess ? 'Private Workflow' : 'Public Workflow';
 
   const dispatch = useDispatch();

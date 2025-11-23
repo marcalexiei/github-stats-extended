@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { FaGithub as GithubIcon } from 'react-icons/fa';
 
@@ -13,9 +12,6 @@ import { classnames } from '../../utils';
 import mockup from '../../assets/mockup.png';
 
 const SignUpScreen = () => {
-  // eslint-disable-next-line no-unused-vars
-  const userId = useSelector((state) => state.user.userId);
-
   return (
     <div className="h-full flex flex-wrap">
       <div className="hidden lg:block lg:w-3/5 lg:p-8 lg:my-auto">

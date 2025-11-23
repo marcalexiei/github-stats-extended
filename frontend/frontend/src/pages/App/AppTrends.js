@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useParams,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {
   logout as _logout,
   setUserAccess as _setUserAccess,
@@ -20,11 +15,14 @@ import SettingsScreen from '../Settings';
 import { NoMatchScreen } from '../Misc';
 import { getUserMetadata } from '../../api';
 import Footer from './Footer';
+import {
+  useIsAuthenticated,
+  useUserKey,
+} from '../../redux/selectors/userSelectors';
 
 function App() {
-  const userId = useSelector((state) => state.user.userId);
-  const userKey = useSelector((state) => state.user.userKey);
-  const isAuthenticated = userId && userId.length > 0;
+  const userKey = useUserKey();
+  const isAuthenticated = useIsAuthenticated();
 
   const dispatch = useDispatch();
   const setUserAccess = (access) =>

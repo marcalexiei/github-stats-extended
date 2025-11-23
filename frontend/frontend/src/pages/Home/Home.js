@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import BounceLoader from 'react-spinners/BounceLoader';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -19,14 +19,18 @@ import { CardTypes } from '../../utils';
 import { DEFAULT_OPTION as STATS_DEFAULT_RANK } from '../../components/Home/StatsRankSection';
 import { DEFAULT_OPTION as LANGUAGES_DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
 import { DEFAULT_OPTION as WAKATIME_DEFAULT_LAYOUT } from '../../components/Home/WakatimeLayoutSection';
+import {
+  useUserId,
+  useIsAuthenticated,
+  usePrivateAccess,
+} from '../../redux/selectors/userSelectors';
 
 const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const userId = useSelector((state) => state.user.userId);
-  const privateAccess = useSelector((state) => state.user.privateAccess);
-
-  const isAuthenticated = userId && userId.length > 0;
+  const userId = useUserId();
+  const privateAccess = usePrivateAccess();
+  const isAuthenticated = useIsAuthenticated();
 
   const dispatch = useDispatch();
 

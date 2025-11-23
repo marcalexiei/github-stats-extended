@@ -2,26 +2,26 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import { Card } from '../../../components';
+import { useUserId } from '../../../redux/selectors/userSelectors';
 
 const SelectCardStage = ({ selectedCard, setSelectedCard, setImageSrc }) => {
-  const userId = useSelector((state) => state.user.userId);
+  const userId = useUserId();
   return (
     <div className="w-full flex flex-wrap">
       {[
         {
           title: 'GitHub Stats Card',
           description: 'your overall GitHub statistics',
-          imageSrc: `?username=${userId || 'anuraghazra'}`,
+          imageSrc: `?username=${userId}`,
           demoCustomization: '&include_all_commits=true',
           cardType: 'stats',
         },
         {
           title: 'Top Languages Card',
           description: 'your most frequently used languages',
-          imageSrc: `/top-langs?username=${userId || 'anuraghazra'}`,
+          imageSrc: `/top-langs?username=${userId}`,
           demoCustomization: '&langs_count=4',
           cardType: 'top-langs',
         },

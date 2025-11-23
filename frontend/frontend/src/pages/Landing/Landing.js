@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 import { FaCheck as CheckIcon, FaGithub as GithubIcon } from 'react-icons/fa';
@@ -13,11 +12,10 @@ import avgupta456Langs from '../../assets/avgupta456_langs.png';
 import tiangoloRepos from '../../assets/tiangolo_repos.png';
 import reininkRepos from '../../assets/reinink_repos.png';
 import dhermesLangs from '../../assets/dhermes_langs.png';
+import { useIsAuthenticated } from '../../redux/selectors/userSelectors';
 
 function LandingScreen() {
-  const userId = useSelector((state) => state.user.userId);
-
-  const isAuthenticated = userId && userId.length > 0;
+  const isAuthenticated = useIsAuthenticated();
 
   return (
     <section>

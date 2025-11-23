@@ -4,27 +4,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { useSelector } from 'react-redux';
-
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import { createMockReq, createMockRes } from '../../mock-http';
 import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
-import { setUserId } from '../../axios-override';
+import { setIsAuthenticated } from '../../axios-override';
+import {
+  useIsAuthenticated,
+  useUserToken,
+} from '../../redux/selectors/userSelectors';
 
 const SvgInline = (props) => {
   const [svg, setSvg] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const containerRef = useRef(null);
-  const userToken = useSelector((state) => state.user.token);
-  const userId = useSelector((state) => state.user.userId);
+  const userToken = useUserToken();
+  const isAuthenticated = useIsAuthenticated();
   const { url } = props;
 
-  // provide userId to non-react code in axios-override.js
+  // provide isAuthenticated to non-react code in axios-override.js
   useEffect(() => {
-    setUserId(userId);
-  }, [userId]);
+    setIsAuthenticated(isAuthenticated);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const loadSvg = async () => {
@@ -35,7 +37,6 @@ const SvgInline = (props) => {
       let body;
       let status;
 
-      const isAuthenticated = userId && userId.length > 0;
       if (isAuthenticated && (!userToken || userToken === 'placeholderPAT')) {
         // waiting for backend call to private-access
         return;
@@ -67,7 +68,7 @@ const SvgInline = (props) => {
       setLoaded(true);
     };
     loadSvg();
-  }, [userToken, userId, props.url]);
+  }, [userToken, isAuthenticated, props.url]);
 
   useEffect(() => {
     if (loaded && svg && containerRef.current) {

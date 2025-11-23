@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Button, Image } from '../../../components';
 import { classnames } from '../../../utils';
@@ -13,12 +13,16 @@ import {
 } from '../../../constants';
 import { FaGithub as GithubIcon } from 'react-icons/fa';
 import { logout as _logout } from '../../../redux/actions/userActions';
+import {
+  useIsAuthenticated,
+  usePrivateAccess,
+  useUserKey,
+} from '../../../redux/selectors/userSelectors';
 
 const LoginStage = ({ setCurrItem }) => {
-  const userId = useSelector((state) => state.user.userId);
-  const userKey = useSelector((state) => state.user.userKey);
-  const privateAccess = useSelector((state) => state.user.privateAccess);
-  const isAuthenticated = userId && userId.length > 0;
+  const userKey = useUserKey();
+  const privateAccess = usePrivateAccess();
+  const isAuthenticated = useIsAuthenticated();
 
   const dispatch = useDispatch();
   const logout = () => {
