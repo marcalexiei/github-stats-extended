@@ -12,6 +12,7 @@ import appIcon from '../../assets/appLogo64.png';
 import { classnames } from '../../utils';
 import { GITHUB_PUBLIC_AUTH_URL } from '../../constants';
 import { FaGithub as GithubIcon } from 'react-icons/fa';
+import { ProgressBar } from '../../components';
 
 const propTypes = {
   to: PropTypes.string.isRequired,
@@ -63,12 +64,13 @@ const Header = ({ mode }) => {
   const [toggle, setToggle] = useState(false);
 
   const isAuthenticated = useIsAuthenticated();
+  const [stage, setStage] = useState(isAuthenticated ? 1 : 0);
 
   const dispatch = useDispatch();
   const logout = () => dispatch(_logout());
 
   return (
-    <div className="text-gray-100 bg-white shadow-md body-font top-0 z-50">
+    <div className="text-gray-100 bg-gray-100 shadow-md body-font top-0 z-50">
       <div className="p-5 flex flex-wrap">
         {/* GitHub Trends Logo */}
         <Link
@@ -151,6 +153,17 @@ const Header = ({ mode }) => {
           </>
         )}
       </div>
+      <ProgressBar
+        items={[
+          'Login',
+          'Select Card',
+          'Modify Parameters',
+          'Customize Theme',
+          'Display Card',
+        ]}
+        currItem={stage}
+        setCurrItem={setStage}
+      />
     </div>
   );
 };
