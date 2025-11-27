@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -18,10 +18,17 @@ import {
 function App() {
   const userKey = useUserKey();
   const isAuthenticated = useIsAuthenticated();
+  const [stage, setStage] = useState(isAuthenticated ? 1 : 0);
 
   const dispatch = useDispatch();
   const setUserAccess = (access) =>
     dispatch(_setUserAccess(access.token, access.privateAccess));
+
+  useEffect(() => {
+    if (isAuthenticated && stage === 0) {
+      setStage(1);
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     async function getPrivateAccess() {
@@ -40,9 +47,9 @@ function App() {
   return (
     <div className="h-screen flex flex-col">
       <Router basename="/frontend">
-        <Header mode="trends" />
+        <Header mode="trends" stage={stage} setStage={setStage} />
         <section className="bg-white text-gray-700 flex-grow">
-          <HomeScreen />
+          <HomeScreen stage={stage} setStage={setStage} />
         </section>
       </Router>
     </div>

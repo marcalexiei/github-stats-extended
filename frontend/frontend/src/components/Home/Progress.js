@@ -46,7 +46,7 @@ const ProgressBar = ({ items, currItem, setCurrItem }) => {
   const rightDisabled = currItem === items.length - 1;
 
   return (
-    <div className="w-full flex items-center sticky top-0 bg-white z-10 py-2">
+    <div className="w-full flex items-center sticky top-0 bg-gray-200 z-10 py-2">
       <LeftArrowIcon
         className={classnames(
           'w-8 h-8',

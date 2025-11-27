@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import BounceLoader from 'react-spinners/BounceLoader';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -24,7 +25,7 @@ import {
   usePrivateAccess,
 } from '../../redux/selectors/userSelectors';
 
-const HomeScreen = () => {
+const HomeScreen = ({ stage, setStage }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const userId = useUserId();
@@ -34,14 +35,6 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
 
   const login = (newUserId, userKey) => dispatch(_login(newUserId, userKey));
-
-  // for all stages
-  const [stage, setStage] = useState(isAuthenticated ? 1 : 0);
-  useEffect(() => {
-    if (isAuthenticated && stage === 0) {
-      setStage(1);
-    }
-  }, [isAuthenticated]);
 
   // for stage one
   const [selectedCard, setSelectedCard] = useState('stats');
@@ -345,6 +338,11 @@ const HomeScreen = () => {
       </div>
     </div>
   );
+};
+
+HomeScreen.propTypes = {
+  stage: PropTypes.number.isRequired,
+  setStage: PropTypes.func.isRequired,
 };
 
 export default HomeScreen;
