@@ -14,7 +14,7 @@ const ProgressSection = ({ num, item, passed, onClick }) => {
     <button
       className={classnames(
         'w-1/4 flex flex-col mx-2 p-2 border-t-4 cursor-pointer',
-        passed ? 'border-blue-500' : 'border-gray-400',
+        passed ? 'border-blue-500' : 'border-gray-500',
       )}
       type="button"
       onClick={onClick}
@@ -22,12 +22,12 @@ const ProgressSection = ({ num, item, passed, onClick }) => {
       <div
         className={classnames(
           'text-lg font-bold',
-          passed ? 'text-blue-500' : 'text-gray-400',
+          passed ? 'text-blue-500' : 'text-gray-500',
         )}
       >
         {`Step ${num + 1}`}
       </div>
-      <div className={classnames(passed ? 'text-gray-700' : 'text-gray-400')}>
+      <div className={classnames(passed ? 'text-gray-700' : 'text-gray-500')}>
         {item}
       </div>
     </button>
@@ -46,7 +46,7 @@ const ProgressBar = ({ items, currItem, setCurrItem }) => {
   const rightDisabled = currItem === items.length - 1;
 
   return (
-    <div className="w-full flex items-center sticky top-0 bg-gray-200 z-10 py-2">
+    <div className="w-full flex items-center sticky top-0 bg-gray-300 z-10 pt-3 pb-1 px-20 shadow-md">
       <LeftArrowIcon
         className={classnames(
           'w-8 h-8',

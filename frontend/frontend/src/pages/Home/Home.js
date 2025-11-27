@@ -229,7 +229,7 @@ const HomeScreen = ({ stage, setStage }) => {
   }
 
   return (
-    <div className="h-full px-2 py-4 lg:p-8 text-gray-600 body-font">
+    <div className="h-full px-2 lg:px-8 text-gray-600 body-font">
       <div className="flex flex-col">
         <div className="m-4 rounded-sm">
           <div className="lg:p-4">
