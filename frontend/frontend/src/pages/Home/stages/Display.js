@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { saveSvgAsPng } from 'save-svg-as-png';
 
-import { Button, Card } from '../../../components';
+import { Button, Image } from '../../../components';
 import { classnames } from '../../../utils';
 import { HOST } from '../../../constants';
 
@@ -75,8 +75,8 @@ const DisplayStage = ({ userId, themeSuffix }) => {
                 className={classnames(
                   'm-4 w-60 flex justify-center',
                   item.highlight
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-300 text-gray-500',
+                    ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                    : 'bg-white hover:bg-gray-100 text-black',
                 )}
                 onClick={item.onClick}
               >
@@ -87,12 +87,8 @@ const DisplayStage = ({ userId, themeSuffix }) => {
         </div>
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
-        <div className="w-full lg:w-[65%] mx-auto h-full flex flex-col justify-center">
-          <Card
-            title="Your Card"
-            description="The finished product!"
-            imageSrc={`${themeSuffix}&disable_animations=true`}
-          />
+        <div className="w-full lg:w-3/5 mx-auto flex flex-col justify-center sticky top-32">
+          <Image imageSrc={`${themeSuffix}&disable_animations=true`} />
         </div>
       </div>
     </div>

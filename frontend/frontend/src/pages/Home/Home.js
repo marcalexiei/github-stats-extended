@@ -202,6 +202,8 @@ const HomeScreen = ({ stage, setStage }) => {
       const rect = contentSectionRef.current.getBoundingClientRect();
       if (rect.top < 0) {
         contentSectionRef.current.scrollIntoView();
+        // additional offset to account for sticky progress bar
+        window.scrollBy({ top: -80 });
       }
     }
   }, [stage]);
@@ -293,7 +295,7 @@ const HomeScreen = ({ stage, setStage }) => {
                   'You will be able to customize your card in future steps.',
                   '',
                   '',
-                  'Display the finished card on GitHub, Twitter/X, Linkedin, or anywhere else!',
+                  'Display the finished card on GitHub, Twitter/X, LinkedIn, or anywhere else!',
                 ][stage]
               )}
             </div>
