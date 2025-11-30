@@ -98,60 +98,6 @@ const Header = ({ mode, stage, setStage }) => {
               </button>
             </a>
           </div>
-          {/* Hamburger Menu */}
-          <div className="md:hidden flex ml-auto items-center">
-            <button
-              type="button"
-              className="outline-none"
-              onClick={() => setToggle(!toggle)}
-            >
-              <HamburgerIcon className="w-6 h-6 text-gray-700" />
-            </button>
-          </div>
-        </div>
-        {/* Hamburger Dropdown */}
-        <div className={classnames('p-5 pt-0', !toggle && 'hidden')}>
-          {mode === 'trends' && (
-            <>
-              <MobileLink to="/user" onClick={() => setToggle(false)}>
-                Dashboard
-              </MobileLink>
-            </>
-          )}
-          {isAuthenticated ? (
-            <>
-              {mode === 'trends' && (
-                <MobileLink to="/settings" onClick={() => setToggle(false)}>
-                  Settings
-                </MobileLink>
-              )}
-              <MobileLink
-                to="/"
-                onClick={() => {
-                  setToggle(false);
-                  logout();
-                }}
-              >
-                Sign Out
-              </MobileLink>
-            </>
-          ) : (
-            <>
-              <a
-                className="block text-sm px-2 my-2 py-2 rounded-sm bg-gray-800 text-gray-700"
-                href={GITHUB_PUBLIC_AUTH_URL}
-              >
-                Login
-              </a>
-              <Link
-                to="/signup"
-                onClick={() => setToggle(false)}
-                className="block text-sm px-2 my-2 py-2 rounded-sm bg-blue-500 text-white"
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
         </div>
       </div>
       <ProgressBar
