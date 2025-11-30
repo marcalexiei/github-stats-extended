@@ -83,7 +83,7 @@ const Header = ({ mode, stage, setStage }) => {
             )}
           </Link>
           {/* Star on GitHub */}
-          <div className="hidden md:flex ml-auto items-center text-base justify-center">
+          <div className="flex ml-auto items-center text-base justify-center">
             <a
               href="https://www.github.com/avgupta456/github-trends"
               target="_blank"
