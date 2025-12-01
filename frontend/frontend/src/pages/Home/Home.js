@@ -36,11 +36,11 @@ const HomeScreen = ({ stage, setStage }) => {
 
   const login = (newUserId, userKey) => dispatch(_login(newUserId, userKey));
 
-  // for stage one
+  // for stage two
   const [selectedCard, setSelectedCard] = useState('stats');
   const [imageSrc, setImageSrc] = useState(`?username=${userId}`);
 
-  // for stage two
+  // for stage three
   const [selectedStatsRank, setSelectedStatsRank] =
     useState(STATS_DEFAULT_RANK);
   const [selectedLanguagesLayout, setSelectedLanguagesLayout] = useState(
@@ -177,7 +177,7 @@ const HomeScreen = ({ stage, setStage }) => {
     fullSuffix += `&display_format=percent`;
   }
 
-  // for stage three
+  // for stage four
   const [theme, setTheme] = useState('default');
   let themeSuffix = fullSuffix;
 
