@@ -17,6 +17,8 @@ const CustomizeStage = ({
   setSelectedLanguagesLayout,
   selectedWakatimeLayout,
   setSelectedWakatimeLayout,
+  wakatimeUser,
+  setWakatimeUser,
   showTitle,
   setShowTitle,
   showOwner,
@@ -80,6 +82,15 @@ const CustomizeStage = ({
           <LanguagesLayoutSection
             selectedOption={selectedLanguagesLayout}
             setSelectedOption={setSelectedLanguagesLayout}
+          />
+        )}
+        {cardType === CardTypes.WAKATIME && (
+          <TextSection
+            title="WakaTime Username"
+            text='Set your <a href="https://wakatime.com/">WakaTime</a> username to fetch your stats.'
+            placeholder='e.g. "ffflabs"'
+            value={wakatimeUser}
+            setValue={setWakatimeUser}
           />
         )}
         {cardType === CardTypes.WAKATIME && (
@@ -176,6 +187,8 @@ CustomizeStage.propTypes = {
   setSelectedLanguagesLayout: PropTypes.func.isRequired,
   selectedWakatimeLayout: PropTypes.object.isRequired,
   setSelectedWakatimeLayout: PropTypes.func.isRequired,
+  wakatimeUser: PropTypes.string.isRequired,
+  setWakatimeUser: PropTypes.func.isRequired,
   showTitle: PropTypes.bool.isRequired,
   setShowTitle: PropTypes.func.isRequired,
   descriptionLines: PropTypes.number.isRequired,

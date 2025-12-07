@@ -23,7 +23,7 @@ import {
 import { deleteAccount } from '../../../api';
 
 const LoginStage = ({ setCurrItem }) => {
-  const userId = useUserId();
+  const userId = useUserId(null);
   const userKey = useUserKey();
   const privateAccess = usePrivateAccess();
   const isAuthenticated = useIsAuthenticated();

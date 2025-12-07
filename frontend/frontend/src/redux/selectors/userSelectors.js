@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
-export const useUserId = () => {
-  return useSelector((state) => state.user.userId) || 'anuraghazra';
+export const useUserId = (fallbackUsername) => {
+  return useSelector((state) => state.user.userId) || fallbackUsername;
 };
 
 export const useIsAuthenticated = () => {

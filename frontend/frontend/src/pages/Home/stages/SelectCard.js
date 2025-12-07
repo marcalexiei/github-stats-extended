@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { Card } from '../../../components';
 import { useUserId } from '../../../redux/selectors/userSelectors';
+import { DEMO_USER, DEMO_WAKATIME_USER } from '../../../constants';
 
 const SelectCardStage = ({
   selectedCard,
@@ -12,21 +13,20 @@ const SelectCardStage = ({
   setStage,
   setImageSrc,
 }) => {
-  const userId = useUserId();
   return (
     <div className="w-full flex flex-wrap">
       {[
         {
           title: 'GitHub Stats Card',
           description: 'your overall GitHub statistics',
-          imageSrc: `?username=${userId}`,
+          imageSrc: `?username=${useUserId(DEMO_USER)}`,
           demoCustomization: '&include_all_commits=true',
           cardType: 'stats',
         },
         {
           title: 'Top Languages Card',
           description: 'your most frequently used languages',
-          imageSrc: `/top-langs?username=${userId}`,
+          imageSrc: `/top-langs?username=${useUserId(DEMO_USER)}`,
           demoCustomization: '&langs_count=4',
           cardType: 'top-langs',
         },
@@ -49,7 +49,7 @@ const SelectCardStage = ({
         {
           title: 'WakaTime Stats Card',
           description: 'your coding activity from WakaTime',
-          imageSrc: '/wakatime?username=ffflabs',
+          imageSrc: `/wakatime?username=${useUserId(DEMO_WAKATIME_USER)}`,
           demoCustomization: '&langs_count=6&card_width=450',
           cardType: 'wakatime',
         },

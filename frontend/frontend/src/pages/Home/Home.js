@@ -14,7 +14,7 @@ import {
 
 import { authenticate } from '../../api';
 import { login as _login } from '../../redux/actions/userActions';
-import { HOST } from '../../constants';
+import { HOST, DEMO_USER } from '../../constants';
 import { CardTypes } from '../../utils';
 import { DEFAULT_OPTION as STATS_DEFAULT_RANK } from '../../components/Home/StatsRankSection';
 import { DEFAULT_OPTION as LANGUAGES_DEFAULT_LAYOUT } from '../../components/Home/LanguagesLayoutSection';
@@ -25,10 +25,18 @@ import {
   usePrivateAccess,
 } from '../../redux/selectors/userSelectors';
 
+const computeUserName = (selectedCard, myUserId, myWakatimeUser) => {
+  if (selectedCard === CardTypes.WAKATIME) {
+    return myWakatimeUser;
+  } else {
+    return myUserId;
+  }
+};
+
 const HomeScreen = ({ stage, setStage }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const userId = useUserId();
+  const userId = useUserId(DEMO_USER);
   const privateAccess = usePrivateAccess();
   const isAuthenticated = useIsAuthenticated();
 
@@ -37,8 +45,12 @@ const HomeScreen = ({ stage, setStage }) => {
   const login = (newUserId, userKey) => dispatch(_login(newUserId, userKey));
 
   // for stage two
+  const [wakatimeUser, setWakatimeUser] = useState();
+
   const [selectedCard, setSelectedCard] = useState('stats');
-  const [imageSrc, setImageSrc] = useState(`?username=${userId}`);
+  const [imageSrc, setImageSrc] = useState(
+    `?username=${computeUserName(selectedCard, userId, wakatimeUser)}`,
+  );
 
   // for stage three
   const [selectedStatsRank, setSelectedStatsRank] =
@@ -90,8 +102,10 @@ const HomeScreen = ({ stage, setStage }) => {
   }, [selectedCard]);
 
   useEffect(() => {
-    setImageSrc(`?username=${userId}`);
-  }, [userId]);
+    setImageSrc(
+      `?username=${computeUserName(selectedCard, userId, wakatimeUser)}`,
+    );
+  }, [selectedCard, userId, wakatimeUser]);
 
   let fullSuffix = `${imageSrc}`;
 
@@ -337,6 +351,8 @@ const HomeScreen = ({ stage, setStage }) => {
               setIncludeAllCommits={setIncludeAllCommits}
               enableAnimations={enableAnimations}
               setEnableAnimations={setEnableAnimations}
+              wakatimeUser={wakatimeUser}
+              setWakatimeUser={setWakatimeUser}
               usePercent={usePercent}
               setUsePercent={setUsePercent}
               fullSuffix={fullSuffix}
@@ -351,7 +367,10 @@ const HomeScreen = ({ stage, setStage }) => {
             />
           )}
           {stage === 4 && (
-            <DisplayStage userId={userId} themeSuffix={themeSuffix} />
+            <DisplayStage
+              userId={computeUserName(selectedCard, userId, wakatimeUser)}
+              themeSuffix={themeSuffix}
+            />
           )}
         </div>
       </div>

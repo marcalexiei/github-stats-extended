@@ -24,6 +24,9 @@ export const BACKEND_URL = PROD
 
 export const CURR_YEAR = 2024;
 
+export const DEMO_USER = 'anuraghazra';
+export const DEMO_WAKATIME_USER = 'ffflabs';
+
 window.process = {
   env: {
     FETCH_MULTI_PAGE_STARS: 'true',
