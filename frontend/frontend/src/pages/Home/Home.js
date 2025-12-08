@@ -95,7 +95,7 @@ const HomeScreen = ({ stage, setStage }) => {
   switch (selectedCard) {
     case CardTypes.STATS:
     case CardTypes.TOP_LANGS:
-      fullSuffix += `username=${useUserId(DEMO_USER)}`;
+      fullSuffix += `username=${userId}`;
       break;
     case CardTypes.PIN:
       fullSuffix += `repo=anuraghazra/github-readme-stats`;
