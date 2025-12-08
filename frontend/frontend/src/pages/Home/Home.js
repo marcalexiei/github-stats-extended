@@ -37,7 +37,7 @@ const HomeScreen = ({ stage, setStage }) => {
   const login = (newUserId, userKey) => dispatch(_login(newUserId, userKey));
 
   // for stage two
-  const [wakatimeUser, setWakatimeUser] = useState();
+  const [wakatimeUser, setWakatimeUser] = useState(DEMO_WAKATIME_USER);
 
   const [selectedCard, setSelectedCard] = useState('stats');
 
@@ -104,7 +104,7 @@ const HomeScreen = ({ stage, setStage }) => {
       fullSuffix += `id=bbfce31e0217a3689c8d961a356cb10d`;
       break;
     case CardTypes.WAKATIME:
-      fullSuffix += `username=${useUserId(DEMO_WAKATIME_USER)}`;
+      fullSuffix += `username=${wakatimeUser}`;
   }
 
   if (

@@ -41,7 +41,7 @@ const SelectCardStage = ({ selectedCard, setSelectedCard, setStage }) => {
         {
           title: 'WakaTime Stats Card',
           description: 'your coding activity from WakaTime',
-          demoImageSrc: `/wakatime?username=${useUserId(DEMO_WAKATIME_USER)}&langs_count=6&card_width=450`,
+          demoImageSrc: `/wakatime?username=${DEMO_WAKATIME_USER}&langs_count=6&card_width=450`,
           cardType: CardTypes.WAKATIME,
         },
       ].map((card, index) => (
