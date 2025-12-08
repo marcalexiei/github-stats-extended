@@ -102,12 +102,12 @@ const CustomizeStage = ({
                 <br />
                 {!isAuthenticated && (
                   <>
-                    Please
+                    Please{' '}
                     <a
                       href="#"
                       onClick={(e) => {
                         e.preventDefault();
-                        setStage(1);
+                        setStage(0);
                       }}
                       className="underline text-blue-900"
                     >
@@ -134,7 +134,7 @@ const CustomizeStage = ({
             title="WakaTime Username"
             description={
               <>
-                Set your
+                Set your{' '}
                 <a
                   href="https://wakatime.com/"
                   target="_blank"
@@ -144,7 +144,7 @@ const CustomizeStage = ({
                 </a>{' '}
                 username to fetch your stats.
               </>
-            } // TODO: make link visible
+            }
             placeholder={`e.g. "${DEMO_WAKATIME_USER}"`}
             value={wakatimeUser}
             setValue={setWakatimeUser}

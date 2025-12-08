@@ -38,7 +38,7 @@ const TextSection = ({
       <input
         type="text"
         className={classnames(
-          'border border-gray-300 rounded px-2 py-1 mt-2 w-1/2',
+          'border border-gray-300 rounded px-2 py-1 mt-2 w-3/4 min-w-48 max-w-xl',
           disabled ? 'cursor-not-allowed' : '',
         )}
         value={internalValue}
