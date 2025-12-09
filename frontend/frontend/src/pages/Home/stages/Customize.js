@@ -8,7 +8,7 @@ import NumericSection from '../../../components/Home/NumericSection';
 import StatsRankSection from '../../../components/Home/StatsRankSection';
 import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSection';
 import WakatimeLayoutSection from '../../../components/Home/WakatimeLayoutSection';
-import { DEMO_REPO, DEMO_WAKATIME_USER } from '../../../constants';
+import { DEMO_GIST, DEMO_REPO, DEMO_WAKATIME_USER } from '../../../constants';
 import { useIsAuthenticated } from '../../../redux/selectors/userSelectors';
 
 const CustomizeStage = ({
@@ -73,7 +73,7 @@ const CustomizeStage = ({
           <CheckboxSection
             title="Show Icons?"
             text="Show icons next to all stats."
-            question="Show Icons?"
+            question="Show icons?"
             variable={showIcons}
             setVariable={setShowIcons}
           />
@@ -98,7 +98,7 @@ const CustomizeStage = ({
             title="Repository"
             description={
               <>
-                Set your GitHub Repo to fetch your stats.
+                Enter a repository in <code>owner/repo</code> format.
                 <br />
                 {!isAuthenticated && (
                   <>
@@ -112,20 +112,56 @@ const CustomizeStage = ({
                       className="underline text-blue-900"
                     >
                       log in
-                    </a>
+                    </a>{' '}
                     to change the repo.
                   </>
                 )}
               </>
             }
-            placeholder={`e.g. "${DEMO_REPO}"`} // TODO: example without owner?
+            placeholder={`e.g. "${DEMO_REPO}"`}
             value={repo}
-            setValue={(myRepo) => {
-              if (myRepo.endsWith('/')) {
-                myRepo = myRepo.slice(0, -1);
+            setValue={
+              setRepo
+              /*(newValue) => {
+              if (newValue.endsWith('/')) {
+                newValue = newValue.slice(0, -1);
               }
-              setRepo(myRepo.includes('/') ? myRepo.split('/')[1] : myRepo);
-            }}
+              setRepo(
+                newValue.includes('/') ? newValue.split('/')[1] : newValue,
+              );
+            }*/
+            }
+            disabled={!isAuthenticated}
+          />
+        )}
+        {cardType === CardTypes.GIST && (
+          <TextSection
+            title="Repository"
+            description={
+              <>
+                Enter a Gist id.
+                <br />
+                {!isAuthenticated && (
+                  <>
+                    Please{' '}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setStage(0);
+                      }}
+                      className="underline text-blue-900"
+                    >
+                      log in
+                    </a>{' '}
+                    to change the gist id.
+                  </>
+                )}
+              </>
+            }
+            placeholder={`e.g. "${DEMO_GIST}"`}
+            value={gist}
+            setValue={setGist}
             disabled={!isAuthenticated}
           />
         )}
@@ -206,8 +242,8 @@ const CustomizeStage = ({
           cardType === CardTypes.TOP_LANGS ||
           cardType === CardTypes.WAKATIME) && (
           <CheckboxSection
-            title="Animations"
-            text="Enable Animations."
+            title="Enable Animations?"
+            // text="Enable Animations."
             question="enable animations?"
             variable={enableAnimations}
             setVariable={setEnableAnimations}

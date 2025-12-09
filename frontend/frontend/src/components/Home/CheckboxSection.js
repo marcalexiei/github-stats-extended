@@ -16,7 +16,7 @@ const CheckboxSection = ({
 }) => {
   return (
     <Section title={title}>
-      <p dangerouslySetInnerHTML={{ __html: text }} />
+      {text && <p dangerouslySetInnerHTML={{ __html: text }} />}
       <Checkbox
         question={question}
         variable={variable}
@@ -29,7 +29,7 @@ const CheckboxSection = ({
 
 CheckboxSection.propTypes = {
   title: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   question: PropTypes.string.isRequired,
   variable: PropTypes.bool.isRequired,
   setVariable: PropTypes.func.isRequired,

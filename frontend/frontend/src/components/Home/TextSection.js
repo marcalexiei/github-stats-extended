@@ -18,6 +18,10 @@ const TextSection = ({
   const debounceTimeout = useRef(null);
 
   useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
+  useEffect(() => {
     // Debounce setValue
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);

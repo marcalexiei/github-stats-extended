@@ -106,8 +106,7 @@ const HomeScreen = ({ stage, setStage }) => {
       fullSuffix += `username=${userId}`;
       break;
     case CardTypes.PIN:
-      fullSuffix += `username=${userId}`;
-      fullSuffix += `repo=${repo}`;
+      fullSuffix += `username=${userId}&repo=${repo}`;
       break;
     case CardTypes.GIST:
       fullSuffix += `id=${gist}`;
