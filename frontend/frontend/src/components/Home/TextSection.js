@@ -13,6 +13,7 @@ const TextSection = ({
   setValue,
   disabled,
   placeholder,
+  onPaste,
 }) => {
   const [internalValue, setInternalValue] = useState(value);
   const debounceTimeout = useRef(null);
@@ -49,6 +50,7 @@ const TextSection = ({
         onChange={(e) => setInternalValue(e.target.value)}
         disabled={disabled}
         placeholder={placeholder}
+        onPaste={onPaste}
       />
     </Section>
   );
@@ -61,11 +63,13 @@ TextSection.propTypes = {
   setValue: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   placeholder: PropTypes.string,
+  onPaste: PropTypes.func,
 };
 
 TextSection.defaultProps = {
   disabled: false,
   placeholder: '',
+  onPaste: undefined,
 };
 
 export default TextSection;

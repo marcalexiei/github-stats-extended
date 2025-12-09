@@ -176,7 +176,7 @@ const CustomizeStage = ({
               if (parts.length > 1) {
                 newValue = parts.slice(-1).join('/');
               }
-              setRepo(newValue);
+              setGist(newValue);
             }}
             disabled={!isAuthenticated}
           />
