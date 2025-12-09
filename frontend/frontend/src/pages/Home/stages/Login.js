@@ -99,7 +99,7 @@ const LoginStage = ({ setCurrItem }) => {
 
   return (
     <div className="h-full flex flex-wrap">
-      <div className={deleteModal && 'opacity-25'}>
+      <div className={classnames(deleteModal && 'opacity-25', 'contents')}>
         <div className="lg:block lg:w-3/5 lg:p-8">
           <div
             className={classnames(
