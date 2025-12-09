@@ -99,7 +99,7 @@ const LoginStage = ({ setCurrItem }) => {
 
   return (
     <div className="h-full flex flex-wrap">
-      <div className={classnames(deleteModal ? 'opacity-25' : '', 'flex')}>
+      <div className={classnames(deleteModal ? 'opacity-25' : '', 'md:flex')}>
         <div className="lg:block lg:w-3/5 lg:p-8">
           <div
             className={classnames(
@@ -146,6 +146,23 @@ const LoginStage = ({ setCurrItem }) => {
                   )}
                 </div>
 
+                {/* Delete Account Button */}
+                <div className="mt-6 flex items-center gap-4">
+                  <Button
+                    className="h-12 flex justify-center items-center w-[320px] text-black border border-black bg-white hover:bg-gray-100"
+                    onClick={openDeleteModal}
+                  >
+                    <span className="xl:text-lg text-red-600">
+                      Delete Account
+                    </span>
+                  </Button>
+                  <p className="text-sm text-gray-600 flex-1">
+                    This will delete your GitHub Trends account and then
+                    redirect you to a GitHub screen where you can revoke your
+                    access token.
+                  </p>
+                </div>
+
                 {/* Logout Button */}
                 <div className="mt-6 flex items-center gap-4">
                   <Button
@@ -156,21 +173,6 @@ const LoginStage = ({ setCurrItem }) => {
                   </Button>
                   <p className="text-sm text-gray-600 flex-1">
                     Log out from GitHub Trends.
-                  </p>
-                </div>
-
-                {/* Delete Account Button */}
-                <div className="mt-6 flex items-center gap-4">
-                  <Button
-                    className="h-12 flex justify-center items-center w-[320px] text-black border border-black bg-white hover:bg-gray-100"
-                    onClick={openDeleteModal}
-                  >
-                    <span className="xl:text-lg">Delete Account</span>
-                  </Button>
-                  <p className="text-sm text-gray-600 flex-1">
-                    This will delete your GitHub Trends account and then
-                    redirect you to a GitHub screen where you can revoke your
-                    access token.
                   </p>
                 </div>
               </>
