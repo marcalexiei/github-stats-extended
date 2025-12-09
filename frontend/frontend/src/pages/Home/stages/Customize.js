@@ -120,17 +120,20 @@ const CustomizeStage = ({
             }
             placeholder={`e.g. "${DEMO_REPO}"`}
             value={repo}
-            setValue={
-              setRepo
-              /*(newValue) => {
+            setValue={setRepo}
+            onPaste={(e) => {
+              e.preventDefault();
+              let newValue = e.clipboardData.getData('text');
+              // if the user pasted a full GitHub URL, extract owner/repo
               if (newValue.endsWith('/')) {
                 newValue = newValue.slice(0, -1);
               }
-              setRepo(
-                newValue.includes('/') ? newValue.split('/')[1] : newValue,
-              );
-            }*/
-            }
+              let parts = newValue.split('/');
+              if (parts.length > 2) {
+                newValue = parts.slice(-2).join('/');
+              }
+              setRepo(newValue);
+            }}
             disabled={!isAuthenticated}
           />
         )}
@@ -162,6 +165,19 @@ const CustomizeStage = ({
             placeholder={`e.g. "${DEMO_GIST}"`}
             value={gist}
             setValue={setGist}
+            onPaste={(e) => {
+              e.preventDefault();
+              let newValue = e.clipboardData.getData('text');
+              // if the user pasted a full GitHub URL, extract Gist ID
+              if (newValue.endsWith('/')) {
+                newValue = newValue.slice(0, -1);
+              }
+              let parts = newValue.split('/');
+              if (parts.length > 1) {
+                newValue = parts.slice(-1).join('/');
+              }
+              setRepo(newValue);
+            }}
             disabled={!isAuthenticated}
           />
         )}

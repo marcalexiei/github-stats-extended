@@ -12,7 +12,7 @@ import { Button, Image } from '../../../components';
 import { classnames } from '../../../utils';
 import { HOST } from '../../../constants';
 
-const DisplayStage = ({ filename, themeSuffix }) => {
+const DisplayStage = ({ filename, link, themeSuffix }) => {
   const card = themeSuffix.split('?')[0];
 
   const downloadPNG = () => {
@@ -29,7 +29,7 @@ const DisplayStage = ({ filename, themeSuffix }) => {
 
   const copyMarkdown = () => {
     navigator.clipboard.writeText(
-      `[![GitHub Stats](https://${HOST}/api${themeSuffix})](https://${HOST}/api${themeSuffix})`,
+      `[![GitHub Stats](https://${HOST}/api${themeSuffix})](${link})`,
     );
     toast.info('Copied to Clipboard!', {
       position: 'bottom-right',
@@ -97,6 +97,7 @@ const DisplayStage = ({ filename, themeSuffix }) => {
 
 DisplayStage.propTypes = {
   filename: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
   themeSuffix: PropTypes.string.isRequired,
 };
 

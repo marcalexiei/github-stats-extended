@@ -30,6 +30,7 @@ import {
   useIsAuthenticated,
   usePrivateAccess,
 } from '../../redux/selectors/userSelectors';
+import axios from 'axios';
 
 const HomeScreen = ({ stage, setStage }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -214,6 +215,24 @@ const HomeScreen = ({ stage, setStage }) => {
     themeSuffix += `&theme=${theme}`;
   }
 
+  // for stage five
+  const [gistUrl, setGistUrl] = useState('');
+
+  useEffect(() => {
+    const fetchGistUrl = async (gistId) => {
+      try {
+        const fullUrl = `https://api.github.com/gists/${gistId}`;
+        const result = await axios.get(fullUrl);
+        return result.data.html_url;
+      } catch (error) {
+        console.error(error);
+        return '';
+      }
+    };
+
+    fetchGistUrl(gist).then(setGistUrl);
+  }, [gist]);
+
   const contentSectionRef = useRef(null);
 
   useEffect(() => {
@@ -389,6 +408,23 @@ const HomeScreen = ({ stage, setStage }) => {
                     return `gist_card`;
                   case CardTypes.WAKATIME:
                     return `${wakatimeUser}_card`;
+                }
+              })()}
+              link={(() => {
+                switch (selectedCard) {
+                  case CardTypes.STATS:
+                  case CardTypes.TOP_LANGS:
+                    return `https://${HOST}/api${themeSuffix}`;
+                  case CardTypes.PIN:
+                    let myRepo = repo;
+                    if (!myRepo.includes('/')) {
+                      myRepo = `${userId}/${myRepo}`;
+                    }
+                    return `https://github.com/${myRepo}`;
+                  case CardTypes.GIST:
+                    return gistUrl;
+                  case CardTypes.WAKATIME:
+                    return `https://wakatime.com/@${wakatimeUser}`;
                 }
               })()}
               themeSuffix={themeSuffix}

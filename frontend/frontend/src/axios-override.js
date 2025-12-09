@@ -6,7 +6,8 @@ import additionalUserStars from './mockData/additional_user_stars.json' with { t
 import commentedIssues from './mockData/commented_issues.json' with { type: 'json' };
 import commentedPrs from './mockData/commented_prs.json' with { type: 'json' };
 import commits from './mockData/commits.json' with { type: 'json' };
-import gist from './mockData/gist.json' with { type: 'json' };
+import gist_graphql from './mockData/gist-graphql.json' with { type: 'json' };
+import gist_rest from './mockData/gist-rest.json' with { type: 'json' };
 import repository from './mockData/repository.json' with { type: 'json' };
 import reviewedPrs from './mockData/reviewed_prs.json' with { type: 'json' };
 import topLanguages from './mockData/top_languages.json' with { type: 'json' };
@@ -92,10 +93,12 @@ axios.defaults.adapter = async (config) => {
     params.query?.includes('query gistInfo(') &&
     params.variables?.gistName === 'bbfce31e0217a3689c8d961a356cb10d'
   ) {
-    return createMockResponse(gist, config);
+    return createMockResponse(gist_graphql, config);
   }
 
   switch (config.url) {
+    case 'https://api.github.com/gists/bbfce31e0217a3689c8d961a356cb10d':
+      return createMockResponse(gist_rest, config);
     case 'https://api.github.com/search/commits?per_page=1&q=author:anuraghazra':
       return createMockResponse(commits, config);
     case 'https://api.github.com/search/issues?per_page=1&q=commenter:anuraghazra+-author:anuraghazra+type:pr':
