@@ -8,7 +8,12 @@ import NumericSection from '../../../components/Home/NumericSection';
 import StatsRankSection from '../../../components/Home/StatsRankSection';
 import LanguagesLayoutSection from '../../../components/Home/LanguagesLayoutSection';
 import WakatimeLayoutSection from '../../../components/Home/WakatimeLayoutSection';
-import { DEMO_GIST, DEMO_REPO, DEMO_WAKATIME_USER } from '../../../constants';
+import {
+  DEMO_GIST,
+  DEMO_REPO,
+  DEMO_USER,
+  DEMO_WAKATIME_USER,
+} from '../../../constants';
 import { useIsAuthenticated } from '../../../redux/selectors/userSelectors';
 
 const CustomizeStage = ({
@@ -19,6 +24,8 @@ const CustomizeStage = ({
   setSelectedLanguagesLayout,
   selectedWakatimeLayout,
   setSelectedWakatimeLayout,
+  selectedUserId,
+  setSelectedUserId,
   repo,
   setRepo,
   gist,
@@ -91,6 +98,50 @@ const CustomizeStage = ({
           <LanguagesLayoutSection
             selectedOption={selectedLanguagesLayout}
             setSelectedOption={setSelectedLanguagesLayout}
+          />
+        )}
+        {(cardType === CardTypes.STATS || cardType === CardTypes.TOP_LANGS) && (
+          <TextSection
+            title="Username"
+            description={
+              <>
+                Enter a GitHub username.
+                <br />
+                {!isAuthenticated && (
+                  <>
+                    Please{' '}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setStage(0);
+                      }}
+                      className="underline text-blue-900"
+                    >
+                      log in
+                    </a>{' '}
+                    to change the username.
+                  </>
+                )}
+              </>
+            }
+            placeholder={`e.g. "${DEMO_USER}"`}
+            value={selectedUserId}
+            setValue={setSelectedUserId}
+            onPaste={(e) => {
+              e.preventDefault();
+              let newValue = e.clipboardData.getData('text');
+              // if the user pasted a full GitHub URL, extract username
+              if (newValue.endsWith('/')) {
+                newValue = newValue.slice(0, -1);
+              }
+              let parts = newValue.split('/');
+              if (parts.length > 1) {
+                newValue = parts.slice(-1).join('/');
+              }
+              setRepo(newValue);
+            }}
+            disabled={!isAuthenticated}
           />
         )}
         {cardType === CardTypes.PIN && (
@@ -302,6 +353,8 @@ CustomizeStage.propTypes = {
   setSelectedLanguagesLayout: PropTypes.func.isRequired,
   selectedWakatimeLayout: PropTypes.object.isRequired,
   setSelectedWakatimeLayout: PropTypes.func.isRequired,
+  selectedUserId: PropTypes.string.isRequired,
+  setSelectedUserId: PropTypes.func.isRequired,
   repo: PropTypes.string.isRequired,
   setRepo: PropTypes.func.isRequired,
   gist: PropTypes.string.isRequired,

@@ -44,6 +44,7 @@ const HomeScreen = ({ stage, setStage }) => {
   const login = (newUserId, userKey) => dispatch(_login(newUserId, userKey));
 
   // for stage two
+  const [selectedUserId, setSelectedUserId] = useState(userId);
   const [repo, setRepo] = useState(DEMO_REPO);
   const [gist, setGist] = useState(DEMO_GIST);
   const [wakatimeUser, setWakatimeUser] = useState(DEMO_WAKATIME_USER);
@@ -104,7 +105,7 @@ const HomeScreen = ({ stage, setStage }) => {
   switch (selectedCard) {
     case CardTypes.STATS:
     case CardTypes.TOP_LANGS:
-      fullSuffix += `username=${userId}`;
+      fullSuffix += `username=${selectedUserId}`;
       break;
     case CardTypes.PIN:
       fullSuffix += `username=${userId}&repo=${repo}`;
@@ -374,6 +375,8 @@ const HomeScreen = ({ stage, setStage }) => {
               setIncludeAllCommits={setIncludeAllCommits}
               enableAnimations={enableAnimations}
               setEnableAnimations={setEnableAnimations}
+              selectedUserId={selectedUserId}
+              setSelectedUserId={setSelectedUserId}
               repo={repo}
               setRepo={setRepo}
               gist={gist}
@@ -399,9 +402,8 @@ const HomeScreen = ({ stage, setStage }) => {
               filename={(() => {
                 switch (selectedCard) {
                   case CardTypes.STATS:
-                    return `${userId}_card`;
                   case CardTypes.TOP_LANGS:
-                    return `${userId}_card`;
+                    return `${selectedUserId}_card`;
                   case CardTypes.PIN:
                     return `${repo}_card`;
                   case CardTypes.GIST:

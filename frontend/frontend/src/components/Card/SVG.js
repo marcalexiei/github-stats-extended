@@ -9,7 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 import { createMockReq, createMockRes } from '../../mock-http';
 import { default as router } from '../../backend/.vercel/output/functions/api.func/router.js';
-import { setIsAuthenticated } from '../../axios-override';
+import { setShouldMock } from '../../axios-override';
 import {
   useIsAuthenticated,
   useUserToken,
@@ -21,12 +21,12 @@ const SvgInline = (props) => {
   const containerRef = useRef(null);
   const userToken = useUserToken();
   const isAuthenticated = useIsAuthenticated();
-  const { url } = props;
+  const { url, stage } = props;
 
-  // provide isAuthenticated to non-react code in axios-override.js
+  // provide shouldMock to non-react code in axios-override.js
   useEffect(() => {
-    setIsAuthenticated(isAuthenticated);
-  }, [isAuthenticated]);
+    setShouldMock(stage === 0 || !isAuthenticated);
+  }, [isAuthenticated, props.stage]);
 
   useEffect(() => {
     const loadSvg = async () => {
@@ -42,22 +42,20 @@ const SvgInline = (props) => {
         return;
       }
 
-      // if (isAuthenticated) {
-      const req = createMockReq({
-        method: 'GET',
-        url: url,
-      });
-      const res = createMockRes();
-      await router(req, res);
-      body = res._getBody();
-      status = res._getStatusCode();
-      /*
-          } else {
-            let res = await axios.get(url);
-            body = res.data;
-            status = res.status;
-          }
-*/
+      if (stage === 4 && !isAuthenticated) {
+        let res = await axios.get(url);
+        body = res.data;
+        status = res.status;
+      } else {
+        const req = createMockReq({
+          method: 'GET',
+          url: url,
+        });
+        const res = createMockRes();
+        await router(req, res);
+        body = res._getBody();
+        status = res._getStatusCode();
+      }
 
       if (status >= 300) {
         console.error('failed to fetch/generate SVG');
@@ -68,7 +66,7 @@ const SvgInline = (props) => {
       setLoaded(true);
     };
     loadSvg();
-  }, [userToken, isAuthenticated, props.url]);
+  }, [userToken, isAuthenticated, props.url, props.stage]);
 
   useEffect(() => {
     if (loaded && svg && containerRef.current) {
@@ -103,6 +101,7 @@ SvgInline.propTypes = {
   url: PropTypes.string.isRequired,
   forceLoading: PropTypes.bool,
   compact: PropTypes.bool,
+  stage: PropTypes.number.isRequired,
 };
 
 SvgInline.defaultProps = {

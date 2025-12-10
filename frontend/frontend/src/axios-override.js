@@ -20,6 +20,9 @@ const cachedAxios = setupCache(axios, {
   interpretHeader: false,
   cacheTakeover: false,
   methods: ['get', 'post'],
+  cachePredicate: {
+    allowUrls: ['api.github.com', HOST],
+  },
 });
 
 axios.get = cachedAxios.get.bind(cachedAxios);
@@ -36,17 +39,21 @@ function createMockResponse(data, config) {
   });
 }
 
-// store isAuthenticated outside React context so the interceptor can access it
-let isAuthenticated = null;
+// store shouldMock outside React context so the interceptor can access it
+let shouldMock = null;
 
-export function setIsAuthenticated(newIsAuthenticated) {
-  isAuthenticated = newIsAuthenticated;
+export function setShouldMock(newShouldMock) {
+  shouldMock = newShouldMock;
 }
 
 const defaultAdapter = getAdapter(axios.defaults.adapter);
 
 // mock responses to "anuraghazra" requests
 axios.defaults.adapter = async (config) => {
+  if (!shouldMock) {
+    return defaultAdapter(config);
+  }
+
   const params = config.data ? JSON.parse(config.data) : {};
 
   if (
