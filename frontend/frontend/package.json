@@ -57,6 +57,9 @@
     "prettier": "^3.0.3",
     "tailwindcss": "^3.3.5"
   },
+  "resolutions": {
+    "resolve-url-loader": "^5.0.0"
+  },
   "scripts": {
     "setup-trends": "cp ./public/trends.html ./public/index.html",
     "start-trends": "yarn setup-trends && REACT_APP_MODE=trends craco start",
