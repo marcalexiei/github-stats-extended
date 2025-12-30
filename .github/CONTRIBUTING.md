@@ -30,9 +30,9 @@ To contribute your language you need to edit the [backend/src/translations.js](.
 
 In short, when you submit changes, your submissions are understood to be under the same [MIT License](https://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
 
-## Report issues/bugs using GitHub's [issues](https://github.com/anuraghazra/github-readme-stats/issues)
+## Report issues/bugs using GitHub's issues
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/anuraghazra/github-readme-stats/issues/new/choose).
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/stats-organization/github-stats-extended/issues/new/choose). If there is already an open issue for your bug in the upstream repo [github-readme-stats](https://github.com/anuraghazra/github-readme-stats/issues) you don't need to report it here.
 
 ## Frequently Asked Questions (FAQs)
 

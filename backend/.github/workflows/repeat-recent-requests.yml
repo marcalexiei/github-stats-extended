@@ -22,7 +22,7 @@ jobs:
         id: myRequest
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://github-readme-stats-git-caching-martin-mfgs-projects.vercel.app/api/repeat-recent"
+          url: "https://github-stats-extended.vercel.app/api/repeat-recent"
           method: "POST"
           timeout: "62000"
       - name: Show Response

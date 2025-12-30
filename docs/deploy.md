@@ -1,6 +1,6 @@
 # Deploy on your own
 
-Since the GitHub API only allows a limited number of requests per hour, my `https://github-readme-stats-phi-jet-58.vercel.app/api` could possibly hit the rate limiter. If you host it on your own Vercel server, then you do not have to worry about anything. Also, if you don't want to give my GitHub-Stats-Extended instance access to your private contributions but still want to include these contributions in your stats, you can simply host your own instance.
+Since the GitHub API only allows a limited number of requests per hour, my `https://github-stats-extended.vercel.app/api` could possibly hit the rate limiter. If you host it on your own Vercel server, then you do not have to worry about anything. Also, if you don't want to give my GitHub-Stats-Extended instance access to your private contributions but still want to include these contributions in your stats, you can simply host your own instance.
 
 ## First step: get your Personal Access Token (PAT)
 

@@ -8,7 +8,7 @@ Compared to [github-readme-stats](https://github.com/anuraghazra/github-readme-s
 
 ### Frontend for easy, visual configuration of cards
 
-GitHub-Stats-Extended adds a frontend which allows users to visually configure stats cards. It is hosted at https://monorepo-test-backend-seven.vercel.app/frontend.
+GitHub-Stats-Extended adds a frontend which allows users to visually configure stats cards. It is hosted at https://github-stats-extended.vercel.app/frontend.
 
 ![frontend screenshot](frontend-screenshot.png)
 
@@ -29,7 +29,7 @@ GitHub-Stats-Extended proactively precomputes and caches cards. This solves the 
 GitHub-Stats-Extended fetches up to 1000 of your starred repositories to accurately compute your stars count. In github-readme-stats, this is limited to 100 repos because github-readme-stats doesn't have the above-mentioned performance improvements.
 
 ### Private contributions support
-GitHub-Stats-Extended can include private contributions in your stats cards. You no longer have to deploy your own instance for that. Just log into the [GitHub-Stats-Extended Wizard](https://monorepo-test-backend-seven.vercel.app/frontend) via the "GitHub Private Access" button (or click "Upgrade to Private Access" if already logged in). This will allow GitHub-Stats-Extended to see your private contributions.
+GitHub-Stats-Extended can include private contributions in your stats cards. You no longer have to deploy your own instance for that. Just log into the [GitHub-Stats-Extended Wizard](https://github-stats-extended.vercel.app/frontend) via the "GitHub Private Access" button (or click "Upgrade to Private Access" if already logged in). This will allow GitHub-Stats-Extended to see your private contributions.
 
 ### Display contributions to specific repositories or organizations
 
@@ -43,7 +43,7 @@ See [here](advanced_documentation.md#filtering-by-repository-and-owner) for full
 
 anuraghazra's contributions to github-readme-stats:
 
-![anuraghazra's contributions to github-readme-stats](https://github-readme-stats-phi-jet-58.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented)
+![anuraghazra's contributions to github-readme-stats](https://github-stats-extended.vercel.app/api/pin/?username=anuraghazra&repo=github-readme-stats&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented)
 
 Add `&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented` to your repo card url to display your contributions to the pinned repository.
 
@@ -51,7 +51,7 @@ Add `&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commen
 
 anurag's contributions to razorpay:
 
-![anurag's contributions to razorpay](https://github-readme-stats-phi-jet-58.vercel.app/api?username=anuraghazra&owner=razorpay&hide=prs,issues,stars,commits,contribs&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented&hide_rank=true&custom_title=anurag%27s%20contributions%20to%20razorpay&card_width=333)
+![anurag's contributions to razorpay](https://github-stats-extended.vercel.app/api?username=anuraghazra&owner=razorpay&hide=prs,issues,stars,commits,contribs&show=prs_authored,prs_commented,prs_reviewed,issues_authored,issues_commented&hide_rank=true&custom_title=anurag%27s%20contributions%20to%20razorpay&card_width=333)
 
 Add `&repo=userA/repoA,orgB/repoB` or `&owner=userC,orgD` to your profile stats url to filter your contributions by repo or organization. (The screenshot above uses further customization options.)
 
@@ -79,4 +79,4 @@ I also try to structure my own changes in a way that minimizes merge conflicts w
 
 GitHub-Stats-Extended aims to be fully compatible with [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Generally, additional functionality introduced in this fork has to be explictly enabled via some parameter.
 
-So you can change an existing stats card url from [github-readme-stats](https://github.com/anuraghazra/github-readme-stats) to GitHub-Stats-Extended simply by changing the domain from `github-readme-stats.vercel.app` to `github-readme-stats-phi-jet-58.vercel.app`. The card will look the same.
+So you can change an existing stats card url from [github-readme-stats](https://github.com/anuraghazra/github-readme-stats) to GitHub-Stats-Extended simply by changing the domain from `github-readme-stats.vercel.app` to `github-stats-extended.vercel.app`. The card will look the same.

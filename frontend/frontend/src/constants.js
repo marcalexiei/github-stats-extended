@@ -6,7 +6,7 @@ export const USE_LOGGER = true;
 export const CLIENT_ID = 'Ov23liZSweT9LJrck9i8';
 
 export const HOST = PROD
-  ? 'monorepo-test-backend-seven.vercel.app'
+  ? 'github-stats-extended.vercel.app'
   : 'localhost:3000';
 
 export const REDIRECT_URI = PROD
