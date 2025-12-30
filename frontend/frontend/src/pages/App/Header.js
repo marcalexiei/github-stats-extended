@@ -73,7 +73,7 @@ const Header = ({ stage, setStage }) => {
           {/* Star on GitHub */}
           <div className="flex ml-auto items-center text-base justify-center">
             <a
-              href="https://www.github.com/avgupta456/github-trends"
+              href="https://github.com/stats-organization/github-stats-extended"
               target="_blank"
               rel="noopener noreferrer"
             >
