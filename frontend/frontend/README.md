@@ -10,14 +10,12 @@ yarn install
 
 ```
 yarn start-trends
-yarn start-wrapped
 ```
 
 ## Build
 
 ```
 yarn build-trends
-yarn build-wrapped
 ```
 
 Then, just commit on the main branch (Vercel takes care of the rest)

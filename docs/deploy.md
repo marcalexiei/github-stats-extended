@@ -40,7 +40,7 @@ Selecting the right scopes for your token is important in case you want to displ
 
 Click on the deploy button to get started!
 
-[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/martin-mfg/github-readme-stats)
+[![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/stats-organization/github-stats-extended)
 
 <details>
  <summary><b>:hammer_and_wrench: Step-by-step guide on setting up your own Vercel instance</b></summary>
