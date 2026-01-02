@@ -20,17 +20,18 @@ Selecting the right scopes for your token is important in case you want to displ
 ### Fine-grained token
 
 > [!WARNING]\
-> This limits the scope to issues in your repositories and includes only public commits.
+> This limits the scope of commits to public repositories only.
 
 * Go to [Account -> Settings -> Developer Settings -> Personal access tokens -> Fine-grained tokens](https://github.com/settings/tokens).
     * Click on `Generate new token -> Generate new token`.
+    * Enter a token name
     * Select an expiration date
     * Select `All repositories`
-    * Scopes to select in `Repository permission`:
+    * Scopes to select under `Permissions`:
         * Commit statuses: read-only
         * Contents: read-only
         * Issues: read-only
-        * Metadata: read-only
+        * Metadata: read-only (added automatically when selecting above scopes)
         * Pull requests: read-only
     * Click on `Generate token` and copy it.
 
@@ -43,24 +44,24 @@ Click on the deploy button to get started!
 [![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/stats-organization/github-stats-extended)
 
 <details>
- <summary><b>:hammer_and_wrench: Step-by-step guide on setting up your own Vercel instance</b></summary>
+ <summary><b>:hammer_and_wrench: Alternative: Step-by-step guide on setting up your own Vercel instance</b></summary>
 
 1.  Go to [vercel.com](https://vercel.com/).
 2.  Click on `Log in`.
     ![](https://files.catbox.moe/pcxk33.png)
-    3.  Sign in with GitHub by pressing `Continue with GitHub`.
-        ![](https://files.catbox.moe/b9oxey.png)
-    4.  Sign in to GitHub and allow access to all repositories if prompted.
-    5.  Fork this repo.
-    6.  Go back to your [Vercel dashboard](https://vercel.com/dashboard).
-    7.  To import a project, click the `Add New...` button and select the `Project` option.
-        ![](https://files.catbox.moe/3n76fh.png)
-    8.  Click the `Continue with GitHub` button, search for the required Git Repository and import it by clicking the `Import` button. Alternatively, you can import a Third-Party Git Repository using the `Import Third-Party Git Repository ->` link at the bottom of the page.
-        ![](https://files.catbox.moe/mg5p04.png)
-    9.  Create a Personal Access Token (PAT) as described in the [previous section](#first-step-get-your-personal-access-token-pat).
-    10. Add the PAT as an environment variable named `PAT_1` (as shown).
-        ![](https://files.catbox.moe/0yclio.png)
-    11. Click deploy, and you're good to go. See your domains to use the API!
+3.  Sign in with GitHub by pressing `Continue with GitHub`.
+    ![](https://files.catbox.moe/b9oxey.png)
+4.  Sign in to GitHub and allow access to all repositories if prompted.
+5.  Fork this repo.
+6.  Go back to your [Vercel dashboard](https://vercel.com/dashboard).
+7.  To import a project, click the `Add New...` button and select the `Project` option.
+    ![](https://files.catbox.moe/3n76fh.png)
+8.  Click the `Continue with GitHub` button, search for the required Git Repository and import it by clicking the `Import` button. Alternatively, you can import a Third-Party Git Repository using the `Import Third-Party Git Repository ->` link at the bottom of the page.
+    ![](https://files.catbox.moe/mg5p04.png)
+9.  Create a Personal Access Token (PAT) as described in the [previous section](#first-step-get-your-personal-access-token-pat).
+10. Add the PAT as an environment variable named `PAT_1` (as shown).
+    ![](https://files.catbox.moe/0yclio.png)
+11. Click deploy, and you're good to go. See your domains to use the API!
 
 </details>
 
@@ -130,3 +131,5 @@ See [the Vercel documentation](https://vercel.com/docs/concepts/projects/environ
 ## Keep your fork up to date
 
 You can keep your fork, and thus your private Vercel instance up to date with the upstream using GitHub's [Sync Fork button](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork). You can also use the [pull](https://github.com/wei/pull) package created by [@wei](https://github.com/wei) to automate this process.
+
+As a pre-requisite, GitHub has to know that your personal GitHub-Stats-Extended repo is a fork of https://github.com/stats-organization/github-stats-extended. This only works if you follow the "Alternative: Step-by-step guide on setting up your own Vercel instance" above, instead of clicking the Vercel "Deploy" button above.
