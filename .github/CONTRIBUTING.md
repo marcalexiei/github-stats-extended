@@ -4,17 +4,9 @@
 
 To run and test GitHub-Stats-Extended, you need to follow a few simple steps:
 
-1. make sure you have a [Vercel](https://vercel.com/) account
-2. Install [Vercel CLI](https://vercel.com/download).
-3. Fork the repository and clone the code to your local machine.
-4. Run `npm install` in the repository root.
-5. Run the command `vercel` in the root and follow the steps there.
-6. Run the command `vercel dev` to start a development server at <http://localhost:3000>.
-7. Create a `.env` file in the root and add the following line `NODE_ENV=development`, this will disable caching for local development.
-8. The cards will then be available from this local endpoint (i.e. `http://localhost:3000/api?username=anuraghazra`).
-
-> [!NOTE]
-> You can debug the package code in [Vscode](https://code.visualstudio.com/) by using the [Node.js: Attach to process](https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_setting-up-an-attach-configuration) debug option. You can also debug any tests using the [VSCode Jest extension](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest). For more information, see https://github.com/jest-community/vscode-jest/issues/912.
+1. create [your own deployment](../docs/deploy.md)
+2. optional: add an SQL database; by using e.g. the ["Nile" integration](https://vercel.com/marketplace/nile) or by manually setting the environment variable `POSTGRES_URL`
+3. optional: [create your own OAuth App](https://github.com/settings/developers) and set environment variables `OAUTH_REDIRECT_URI`, `OAUTH_CLIENT_ID` and `OAUTH_CLIENT_SECRET` on Vercel accordingly
 
 ## Themes Contribution
 
@@ -50,7 +42,7 @@ We use GitHub issues to track public bugs. Report a bug by [opening a new issue]
 
 **Q:** How to count private stats?
 
-> **Ans:** We can only count public commits & we cannot access any other private info of any users, so it's not possible. The only way to count your personal private stats is to deploy on your own instance & use your own PAT (Personal Access Token)
+> see [here](../docs/fork.md#private-contributions-support)
 
 ### Feature Request
 

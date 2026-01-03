@@ -264,7 +264,7 @@ Here is a list of all available locales:
 </td></tr>
 </table>
 
-If we don't support your language, please consider contributing! You can find more information about how to do it in our [contributing guidelines](CONTRIBUTING.md#translations-contribution).
+If we don't support your language, please consider contributing! You can find more information about how to do it in our [contributing guidelines](../.github/CONTRIBUTING.md#translations-contribution).
 
 #### Stats Card Exclusive Options
 
