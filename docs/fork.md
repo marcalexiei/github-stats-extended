@@ -1,6 +1,6 @@
 # Fork Information
 
-This project is a fork of [github-readme-stats](https://github.com/anuraghazra/github-readme-stats).
+This project is an actively maintained fork of [github-readme-stats](https://github.com/anuraghazra/github-readme-stats).
 
 ## Key Differences
 
