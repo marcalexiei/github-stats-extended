@@ -132,4 +132,4 @@ See [the Vercel documentation](https://vercel.com/docs/concepts/projects/environ
 
 You can keep your fork, and thus your private Vercel instance up to date with the upstream using GitHub's [Sync Fork button](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork). You can also use the [pull](https://github.com/wei/pull) package created by [@wei](https://github.com/wei) to automate this process.
 
-As a pre-requisite, GitHub has to know that your personal GitHub-Stats-Extended repo is a fork of https://github.com/stats-organization/github-stats-extended. This only works if you follow the "Step-by-step guide on setting up your own Vercel instance" above, instead of clicking the Vercel "Deploy" button above.
+As a prerequisite, GitHub has to know that your personal GitHub-Stats-Extended repo is a fork of https://github.com/stats-organization/github-stats-extended. This only works if you follow the "Step-by-step guide on setting up your own Vercel instance" above, instead of clicking the Vercel "Deploy" button above.

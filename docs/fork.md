@@ -77,6 +77,6 @@ I also try to structure my own changes in a way that minimizes merge conflicts w
 
 ## Compatibility Notes
 
-GitHub-Stats-Extended aims to be fully compatible with [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Generally, additional functionality introduced in this fork has to be explictly enabled via some parameter.
+GitHub-Stats-Extended aims to be fully compatible with [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Generally, additional functionality introduced in this fork has to be explicitly enabled via some parameter.
 
 So you can change an existing stats card url from [github-readme-stats](https://github.com/anuraghazra/github-readme-stats) to GitHub-Stats-Extended simply by changing the domain from `github-readme-stats.vercel.app` to `github-stats-extended.vercel.app`. The card will look the same.
