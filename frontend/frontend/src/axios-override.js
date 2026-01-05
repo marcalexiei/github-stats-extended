@@ -28,6 +28,10 @@ const cachedAxios = setupCache(axios, {
 axios.get = cachedAxios.get.bind(cachedAxios);
 axios.post = cachedAxios.post.bind(cachedAxios);
 
+export function clearAxiosCache() {
+  cachedAxios.storage.clear();
+}
+
 function createMockResponse(data, config) {
   return Promise.resolve({
     data,
