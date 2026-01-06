@@ -6,7 +6,14 @@ const authenticate = async (code, privateAccess, userKey) => {
   try {
     const fullUrl = `https://${HOST}/api/authenticate?code=${code}&private_access=${privateAccess}&user_key=${userKey}`;
     const result = await axios.post(fullUrl);
-    return result.data;
+    const { userId, needDowngrade } = result.data;
+    if (needDowngrade) {
+      console.info(
+        `User ${userId} needs downgrade from private to public access.`,
+      );
+      window.location.href = `https://${HOST}/api/downgrade?user_key=${userKey}`;
+    }
+    return userId;
   } catch (error) {
     console.error(error);
     return '';

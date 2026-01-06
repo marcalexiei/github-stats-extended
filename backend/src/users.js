@@ -22,9 +22,10 @@ async function getUserFromToken(accessToken) {
  * Exchanges OAuth code for access token and returns userId + accessToken
  *
  * @param {string} code GitHub authentication code from OAuth process
- * @returns {Promise<{userId: string, accessToken: string}>} user_id and access_token of authenticated user
+ * @param privateAccess whether private access was requested
+ * @returns {Promise<{userId: string, accessToken: string, needDowngrade: boolean}>} user_id and access_token of authenticated user, and whether downgrade is needed
  */
-async function githubAuthenticate(code) {
+async function githubAuthenticate(code, privateAccess) {
   if (
     !process.env.OAUTH_CLIENT_ID ||
     !process.env.OAUTH_CLIENT_SECRET ||
@@ -41,7 +42,6 @@ async function githubAuthenticate(code) {
     client_secret: process.env.OAUTH_CLIENT_SECRET,
     code,
     redirect_uri: process.env.OAUTH_REDIRECT_URI,
-    prompt: "select_account",
   });
 
   try {
@@ -69,8 +69,11 @@ async function githubAuthenticate(code) {
       throw new Error("OAuth Error: Invalid user_id/access_token");
     }
 
+    // if user previously granted private access, then logged in via public flow
+    const needDowngrade = body.scope && !privateAccess;
+
     console.log("GitHub Authentication", `${Date.now() - start} ms`);
-    return { userId, accessToken };
+    return { userId, accessToken, needDowngrade };
   } catch (err) {
     if (err.response) {
       throw new Error(`OAuth Error: ${err.response.status}`);
@@ -85,10 +88,13 @@ async function githubAuthenticate(code) {
  * @param {string} code GitHub authentication code from OAuth process
  * @param {boolean} privateAccess whether private access was requested
  * @param {string} userKey user key to associate with the user
- * @returns {Promise<string>} user_id of authenticated user
+ * @returns {Promise<{userId: string, needDowngrade: boolean}>} user_id of authenticated user and whether downgrade is needed
  */
 export async function authenticate(code, privateAccess, userKey) {
-  const { userId, accessToken } = await githubAuthenticate(code);
-  await storeUser(userId, accessToken, userKey, privateAccess);
-  return userId;
+  const { userId, accessToken, needDowngrade } = await githubAuthenticate(
+    code,
+    privateAccess,
+  );
+  await storeUser(userId, accessToken, userKey, needDowngrade || privateAccess);
+  return { userId, needDowngrade };
 }
