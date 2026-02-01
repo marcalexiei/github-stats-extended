@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,12 +25,16 @@ const toMessage = (
   if (typeof input === "string") {
     return input;
   }
-  if ("reason" in input && input.reason?.message) {
-    return input.reason.message;
+  type MaybeErrorReason = { message: string } | null;
+  const reason = ("reason" in input ? input.reason : null) as MaybeErrorReason;
+  if (typeof reason?.message === "string" && !!reason.message.trim()) {
+    return reason.message;
   }
+
   if ("message" in input && input.message) {
     return input.message;
   }
+
   try {
     return JSON.stringify(input);
   } catch {
@@ -76,11 +80,24 @@ export function AppTrends() {
     clearAxiosCache();
   }, [userToken]);
 
-  useEffect(() => {
-    if (isAuthenticated && stage === 0) {
-      setStage(1);
-    }
-  }, [isAuthenticated]);
+  {
+    /**
+     * This effect mus be executed only on page load,
+     * otherwise logged in user are unable to go back on first step
+     */
+    const hasCheckedUserAuthStatusOnLoad = useRef(false);
+    useEffect(() => {
+      if (hasCheckedUserAuthStatusOnLoad.current) {
+        return;
+      }
+
+      hasCheckedUserAuthStatusOnLoad.current = true;
+
+      if (isAuthenticated && stage === 0) {
+        setStage(1);
+      }
+    }, [isAuthenticated, stage]);
+  }
 
   useEffect(() => {
     async function getPrivateAccess() {
@@ -93,8 +110,8 @@ export function AppTrends() {
         }
       }
     }
-    getPrivateAccess();
-  }, [userKey]);
+    void getPrivateAccess();
+  }, [dispatch, userKey]);
 
   return (
     <div className="min-h-screen flex flex-col">

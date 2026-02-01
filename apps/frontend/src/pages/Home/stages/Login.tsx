@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { JSX, RefObject } from "react";
 import clsx from "clsx";
 import { useDispatch } from "react-redux";
@@ -16,7 +16,7 @@ import {
   HOST,
 } from "../../../constants";
 import { FaGithub as GithubIcon } from "react-icons/fa";
-import { logout as _logout } from "../../../redux/slices/user";
+import { logout } from "../../../redux/slices/user";
 import {
   useIsAuthenticated,
   usePrivateAccess,
@@ -24,6 +24,30 @@ import {
   useUserKey,
 } from "../../../redux/selectors/userSelectors";
 import { deleteAccount } from "../../../api/user";
+
+function useOutsideAlerter(
+  ref: RefObject<HTMLElement | null>,
+  action: () => void,
+) {
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        action();
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [action, ref]);
+}
 
 interface LoginStageProps {
   onContinueAsGuestClick: () => void;
@@ -38,51 +62,27 @@ export function LoginStage({
   const isAuthenticated = useIsAuthenticated();
 
   const dispatch = useDispatch();
-  const [deleteModal, setDeleteModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const logout = () => {
-    dispatch(_logout({ userKey: null }));
-  };
+  const handleLogout = useCallback(() => {
+    dispatch(logout({ userKey: null }));
+  }, [dispatch]);
 
   const openDeleteModal = () => {
-    setDeleteModal(true);
+    setShowDeleteModal(true);
   };
 
   const closeDeleteModal = () => {
-    setDeleteModal(false);
+    setShowDeleteModal(false);
   };
-
-  function useOutsideAlerter(
-    ref: RefObject<HTMLElement | null>,
-    action: () => void,
-  ) {
-    useEffect(() => {
-      /**
-       * Alert if clicked on outside of element
-       */
-      function handleClickOutside(event: MouseEvent) {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          action();
-        }
-      }
-
-      // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  }
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, closeDeleteModal);
 
-  const deleteAccountHandler = async () => {
+  const handleAccountDelete = async () => {
     const success = await deleteAccount(userId as string, userKey as string);
     if (success) {
-      logout();
+      handleLogout();
       window.location.href = `https://github.com/settings/connections/applications/${CLIENT_ID}`;
     }
   };
@@ -108,7 +108,7 @@ export function LoginStage({
 
   return (
     <div className="h-full flex flex-wrap">
-      <div className={clsx("md:flex", { "opacity-25": deleteModal })}>
+      <div className={clsx("md:flex", { "opacity-25": showDeleteModal })}>
         <div className="lg:block lg:w-3/5 lg:p-8">
           <div className="bg-gray-200 rounded-sm w-full h-full m-auto p-8 shadow lg:h-auto">
             {isAuthenticated ? (
@@ -118,7 +118,7 @@ export function LoginStage({
                   {privateAccess ? (
                     <div className="flex items-center gap-4">
                       <a
-                        href={`https://${HOST}/api/downgrade?user_key=${userKey}`}
+                        href={`https://${HOST}/api/downgrade?user_key=${userKey as string}`}
                       >
                         <Button className="h-12 flex justify-center items-center w-[320px] text-black border border-black bg-white hover:bg-gray-100">
                           <GithubIcon className="w-6 h-6" />
@@ -171,7 +171,7 @@ export function LoginStage({
                 <div className="mt-6 flex items-center gap-4">
                   <Button
                     className="h-12 flex justify-center items-center w-[320px] text-black border border-black bg-white hover:bg-gray-100"
-                    onClick={logout}
+                    onClick={handleLogout}
                   >
                     <span className="xl:text-lg">Log Out</span>
                   </Button>
@@ -244,7 +244,7 @@ export function LoginStage({
 
               return (
                 <div
-                  key={index}
+                  key={card.demoImageSrc}
                   style={{
                     left: `${x}%`,
                     position: "relative",
@@ -263,7 +263,7 @@ export function LoginStage({
           </div>
         </div>
       </div>
-      {deleteModal && (
+      {showDeleteModal && (
         <div>
           <div className="fixed left-0 top-0 w-full h-full">
             <div className="w-full h-full flex justify-center items-center">
@@ -282,13 +282,16 @@ export function LoginStage({
                 <div className="flex flex-wrap">
                   <Button
                     className="bg-blue-500 hover:bg-blue-600 text-white rounded-[0.25rem]"
-                    onClick={() => setDeleteModal(false)}
+                    onClick={() => {
+                      setShowDeleteModal(false);
+                    }}
                   >
                     Cancel
                   </Button>
                   <Button
                     className="bg-gray-200 hover:bg-gray-300 ml-auto rounded-[0.25rem] text-red-600 border-2"
-                    onClick={deleteAccountHandler}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onClick={handleAccountDelete}
                   >
                     Delete Account
                   </Button>

@@ -59,7 +59,7 @@ export function LanguagesLayoutSection({
       <p>Select a card layout.</p>
       <Select
         options={options}
-        selectedOption={selectedLanguageLayoutOption || DEFAULT_OPTION}
+        selectedOption={selectedLanguageLayoutOption}
         onOptionChange={onLanguageLayoutOptionChange}
       />
     </Section>
