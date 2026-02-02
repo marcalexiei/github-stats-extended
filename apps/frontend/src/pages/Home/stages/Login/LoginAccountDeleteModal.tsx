@@ -41,7 +41,7 @@ export function LoginAccountDeleteModal(
   useOutsideAlerter(wrapperRef, onClose);
 
   return createPortal(
-    <div className="fixed left-0 top-0 w-full h-full opacity">
+    <div className="fixed left-0 top-0 w-full h-full">
       <div className="w-full h-full flex justify-center items-center">
         <div
           className="w-96 p-4 bg-white rounded-sm border-2 border-gray-200"
