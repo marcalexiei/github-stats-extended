@@ -15,7 +15,8 @@
     "knip": "5.81.0",
     "lint-staged": "16.2.7",
     "prettier": "3.7.4",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.53.1"
   },
   "scripts": {
     "prepare": "husky",
@@ -23,7 +24,8 @@
     "format:check": "prettier --check .",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "lint:knip": "knip"
+    "lint:knip": "knip",
+    "typecheck": "tsc --build --noEmit"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,json,jsonc,yaml,yml}": "prettier --write"

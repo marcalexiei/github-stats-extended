@@ -22,12 +22,27 @@ export default defineConfig({
     }),
 
     react(),
+
+    // mock pg (postgres) package in the browser to avoid runtime errors
+    {
+      name: "empty-pg-package",
+      resolveId(id) {
+        if (id === "pg") {
+          return id;
+        }
+        return undefined;
+      },
+      load(id) {
+        if (id === "pg") {
+          return "export default {}";
+        }
+        return undefined;
+      },
+    },
   ],
   build: {
     outDir: "build",
-    rollupOptions: {
-      external: ["pg"],
-    },
+
     /** @todo use chunks to split bundle? */
     chunkSizeWarningLimit: 800,
   },
@@ -41,14 +56,14 @@ export default defineConfig({
         find: "dotenv",
         replacement: path.resolve(
           import.meta.dirname,
-          "src/dotenv-browser-stub.js",
+          "src/dotenv-browser-stub.ts",
         ),
       },
       {
-        find: "./src/fetchers/wakatime.js",
+        find: "../src/fetchers/wakatime.js",
         replacement: path.resolve(
           import.meta.dirname,
-          "src/wakatime-override.js",
+          "src/wakatime-override.ts",
         ),
       },
     ],
