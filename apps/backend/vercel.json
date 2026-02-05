@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd ../../ && pnpm --filter ./apps/backend/ --legacy deploy ./apps/deployment/ && ll ./apps/deployment/ && rm -rf ./apps/backend/ && ll ./apps/ && mv ./apps/deployment/ ./apps/backend/ && ll ./apps/backend/ && ./vercel-preparation.sh",
+  "buildCommand": "cd ../../ && pnpm --filter ./apps/backend/ --legacy deploy ./apps/deployment/ && ls -l ./apps/deployment/ && rm -rf ./apps/backend/ && ls -l ./apps/ && mv ./apps/deployment/ ./apps/backend/ && ls -l ./apps/backend/ && ./vercel-preparation.sh",
   "redirects": [
     {
       "source": "/",
