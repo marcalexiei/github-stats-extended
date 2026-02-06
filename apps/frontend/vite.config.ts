@@ -47,10 +47,6 @@ export default defineConfig({
     /** @todo use chunks to split bundle? */
     chunkSizeWarningLimit: 800,
   },
-  define: {
-    // Prevent Vite from injecting process.env like Webpack DefinePlugin
-    "process.env": {},
-  },
   resolve: {
     alias: [
       {
