@@ -4,7 +4,8 @@ updates:
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: "45 4 * * *"
+      interval: cron
+      cronjob: every day at 5am
     open-pull-requests-limit: 10
     commit-message:
       prefix: "build(deps)"
@@ -16,7 +17,8 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "45 4 * * *"
+      interval: cron
+      cronjob: every day at 5am
     open-pull-requests-limit: 10
     commit-message:
       prefix: "ci(deps)"
@@ -28,7 +30,8 @@ updates:
   - package-ecosystem: devcontainers
     directory: "/"
     schedule:
-      interval: "45 4 * * *"
+      interval: cron
+      cronjob: every day at 5am
     open-pull-requests-limit: 10
     commit-message:
       prefix: "build(deps)"
