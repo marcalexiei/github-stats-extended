@@ -18,7 +18,7 @@ export default defineConfig({
         "stream",
         "buffer",
       ],
-      exclude: ["fs", "net"],
+      exclude: ["fs", "net", "process"],
     }),
 
     react(),
