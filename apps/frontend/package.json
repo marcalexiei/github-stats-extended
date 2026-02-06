@@ -37,7 +37,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build-trends": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },

@@ -41,7 +41,6 @@ export default defineConfig({
     },
   ],
   build: {
-    minify: false,
     outDir: "build",
 
     /** @todo use chunks to split bundle? */
