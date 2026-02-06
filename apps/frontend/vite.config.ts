@@ -18,7 +18,7 @@ export default defineConfig({
         "stream",
         "buffer",
       ],
-      exclude: ["fs", "net", "process"],
+      exclude: ["fs", "net"],
     }),
 
     react(),
@@ -46,6 +46,10 @@ export default defineConfig({
 
     /** @todo use chunks to split bundle? */
     chunkSizeWarningLimit: 800,
+  },
+  define: {
+    // Prevent Vite from injecting process.env like Webpack DefinePlugin
+    "process.env": "windows.process.env",
   },
   resolve: {
     alias: [
