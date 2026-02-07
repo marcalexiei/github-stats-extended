@@ -48,7 +48,7 @@ export default defineConfig({
   },
   define: {
     // Prevent Vite from injecting process.env like Webpack DefinePlugin
-    "process.env": "window.process.env",
+    "process.env": "window?.process?.env",
   },
   resolve: {
     alias: [
