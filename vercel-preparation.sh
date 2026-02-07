@@ -6,8 +6,6 @@ set -euo pipefail
 # move into the folder of this script
 cd "$(dirname "$0")"
 
-git clean ./apps -fx
-
 mkdir -p apps/backend/.vercel/output/functions/api.func/
 # copying `backend` to `backend/.vercel/...` directly may cause problems
 cp -RP apps/backend/. apps/backend-copy/
