@@ -5,7 +5,7 @@ updates:
     directory: "/"
     schedule:
       interval: cron
-      cronjob: "10/15 * * * *"
+      cronjob: "10 13 * * *"
     open-pull-requests-limit: 10
     commit-message:
       prefix: "build(deps)"
@@ -16,7 +16,7 @@ updates:
     directory: "/"
     schedule:
       interval: cron
-      cronjob: "10/15 * * * *"
+      cronjob: "10 13 * * *"
     open-pull-requests-limit: 10
     commit-message:
       prefix: "ci(deps)"
@@ -27,7 +27,7 @@ updates:
     directory: "/"
     schedule:
       interval: cron
-      cronjob: "10/15 * * * *"
+      cronjob: "10 13 * * *"
     open-pull-requests-limit: 10
     commit-message:
       prefix: "build(deps)"
