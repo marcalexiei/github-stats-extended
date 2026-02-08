@@ -8,7 +8,6 @@ on:
   pull_request:
     branches:
       - master
-      - monorepo # to be removed once we complete monorepo tasks
 
 permissions: {}
 
