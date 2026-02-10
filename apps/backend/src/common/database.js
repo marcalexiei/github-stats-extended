@@ -1,6 +1,8 @@
-import pkg from "pg";
-// eslint-disable-next-line import-x/no-named-as-default-member
-const { Pool } = pkg;
+/**
+ * In the browser this has to be mocked to avoid runtime errors
+ * @see apps/frontend/vite.config.ts
+ */
+import { Pool } from "pg";
 
 export const pool = process.env.POSTGRES_URL
   ? new Pool({

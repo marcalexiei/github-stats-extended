@@ -2,9 +2,8 @@
 
 import toEmoji from "emoji-name-map";
 
+import { OWNER_AFFILIATIONS } from "./constants.js";
 import { CustomError } from "./error.js";
-
-const OWNER_AFFILIATIONS = ["OWNER", "COLLABORATOR", "ORGANIZATION_MEMBER"];
 
 /**
  * Returns boolean if value is either "true" or "false" else the value as it is.
@@ -161,7 +160,6 @@ const buildSearchFilter = (repos = [], owners = []) => {
 };
 
 export {
-  OWNER_AFFILIATIONS,
   parseBoolean,
   parseArray,
   clampValue,
