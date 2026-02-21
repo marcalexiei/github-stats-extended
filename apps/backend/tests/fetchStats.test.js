@@ -255,7 +255,7 @@ describe("Test fetchStats", () => {
 
   it("should throw specific error when include_all_commits true and invalid username", async () => {
     await expect(fetchStats("asdf///---", true)).rejects.toThrow(
-      new Error("Invalid username provided."),
+      "Invalid username provided.",
     );
   });
 

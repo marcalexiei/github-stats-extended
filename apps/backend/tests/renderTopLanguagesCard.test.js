@@ -22,7 +22,7 @@ import {
 } from "../src/cards/top-languages.js";
 import { themes } from "../themes/index.js";
 
-import { approxNumber } from "./bench/utils.js";
+import { approxNumber } from "./utils.js";
 
 import "@testing-library/jest-dom/vitest";
 

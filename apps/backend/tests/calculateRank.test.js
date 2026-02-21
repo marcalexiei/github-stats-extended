@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { calculateRank } from "../src/calculateRank.js";
 
-import { approxNumber } from "./bench/utils.js";
+import { approxNumber } from "./utils.js";
 
 import "@testing-library/jest-dom/vitest";
 

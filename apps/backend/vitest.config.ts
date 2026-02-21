@@ -12,7 +12,7 @@ export default defineConfig({
           environment: "jsdom",
           dir: "tests",
           include: ["./*.test.{ts,js}", "./public-instance/*.test.{ts,js}"],
-          setupFiles: ["./tests/setup.jest.js"],
+          setupFiles: ["./tests/_setup.js"],
         },
       },
       {
@@ -22,8 +22,8 @@ export default defineConfig({
           dir: "tests",
           include: ["./*.test.{ts,js}", "./private-instance/*.test.{ts,js}"],
           setupFiles: [
-            "./tests/setup.jest.js",
-            "./tests/setup.private-instance.jest.js",
+            "./tests/_setup.js",
+            "./tests/_setup.private-instance.js",
           ],
         },
       },

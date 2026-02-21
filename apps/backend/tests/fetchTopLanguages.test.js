@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { fetchTopLanguages } from "../src/fetchers/top-languages.js";
 
-import { approxNumber } from "./bench/utils.js";
+import { approxNumber } from "./utils.js";
 
 import "@testing-library/jest-dom/vitest";
 
