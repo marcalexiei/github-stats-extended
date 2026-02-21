@@ -52,8 +52,33 @@ jobs:
       - name: Run backend tests
         run: pnpm --filter github-readme-stats run test
 
+  # Get playwright version from package.json
+  get-playwright-version:
+    name: Get Playwright version
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      v: ${{ steps.get-version.outputs.v }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - name: Get Playwright version
+        id: get-version
+        run: |
+          VERSION=$(pnpm list @playwright/test --depth 0 --json | jq -r '.[0].devDependencies."@playwright/test".version')
+          echo "v=$VERSION" >> "$GITHUB_OUTPUT"
+
   frontend-test-e2e:
     name: Frontend E2E test
+
+    needs:
+      - get-playwright-version
 
     permissions:
       contents: read
@@ -74,7 +99,7 @@ jobs:
     #
     # @see https://playwright.dev/docs/docker
     container:
-      image: mcr.microsoft.com/playwright:v1.58.0-noble
+      image: mcr.microsoft.com/playwright:v${{ needs.get-playwright-version.outputs.v }}-noble
 
     steps:
       - name: Checkout code
