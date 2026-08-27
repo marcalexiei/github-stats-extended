@@ -4,6 +4,8 @@ import githubUsernameRegex from "github-username-regex";
 
 import { calculateRank } from "../calculateRank.js";
 import { getConfig } from "../common/config.js";
+import type { GitHubDateRange } from "../common/date.js";
+import { getGitHubYearRange, toGitHubDateTime } from "../common/date.js";
 import { CustomError, MissingParamError } from "../common/error.js";
 import { wrapTextMultiline } from "../common/fmt.js";
 import { createGraphQLFetcher } from "../common/http.js";
@@ -21,7 +23,6 @@ import type {
   UserInfoQuery,
   UserInfoQueryVariables,
 } from "../graphql/generated/stats.js";
-import type { ContributionRange } from "../graphql/reposContributedToDocument.js";
 import {
   MAX_REPOSITORIES_LIMIT,
   buildReposContributedToDocument,
@@ -355,10 +356,10 @@ const roundToNearestMidnight = (timestamp: number): number =>
 /**
  * Fetch the repositories a user contributed to across every given range.
  *
- * All ranges still pending are queried together in a single request. Whenever a
- * range's sub-collection returns `MAX_REPOSITORIES_LIMIT` results,
- * that range is split and requeried in the next round, since the true count
- * could be higher and some repos may be missing from the response.
+ * All ranges still pending are queried together in a single request.
+ * Whenever a range's sub-collection returns `MAX_REPOSITORIES_LIMIT` results,
+ * that range is split and requeried in the next round,
+ * since the true count could be higher and some repos may be missing from the response.
  *
  * @param username GitHub username.
  * @param ranges Ranges to fetch.
@@ -368,7 +369,7 @@ const roundToNearestMidnight = (timestamp: number): number =>
  */
 const fetchReposContributedTo = async (
   username: string,
-  ranges: Array<ContributionRange>,
+  ranges: Array<GitHubDateRange>,
   includeOwnRepos: boolean,
   pat: string | null,
 ): Promise<Set<string>> => {
@@ -407,7 +408,7 @@ const fetchReposContributedTo = async (
       );
     }
 
-    const nextPending: Array<ContributionRange> = [];
+    const nextPending: Array<GitHubDateRange> = [];
     pending.forEach((range, index) => {
       const rangeResponse = user[`range_${index}`];
       if (!rangeResponse) {
@@ -439,9 +440,9 @@ const fetchReposContributedTo = async (
             range.from.getTime() + Math.floor(rangeDays / 2) * MS_PER_DAY,
           ),
         );
-        // GitHub seems to use only the date portion and ignore the time. So we
-        // subtract 1 second from the `to` of the first half to wrap it to the
-        // previous day and avoid a 1-day overlap of the two halves.
+        // GitHub seems to use only the date portion and ignore the time.
+        // So we subtract 1 second from the `to` of the first half
+        // to wrap it to the previous day and avoid a 1-day overlap of the two halves.
         nextPending.push({
           from: range.from,
           to: new Date(mid.getTime() - 1000),
@@ -488,12 +489,12 @@ const fetchReposContributedTo = async (
 };
 
 /**
- * Calculates the count of repositories the user contributed to, across every
- * contribution year.
+ * Calculates the count of repositories the user contributed to,
+ * across every contribution year.
  *
- * GitHub's `repositoriesContributedTo` field can only span one year. So we walk
- * every year individually via `contributionsCollection(from, to)` and
- * de-duplicate the repo results.
+ * GitHub's `repositoriesContributedTo` field can only span one year.
+ * So we walk every year individually via `contributionsCollection(from, to)`
+ * and de-duplicate the repo results.
  *
  * Whether private contributions are included depends on the used PAT.
  *
@@ -509,10 +510,7 @@ const fetchAllTimeReposContributedTo = async (
   includeOwnRepos: boolean,
   pat: string | null = null,
 ): Promise<number> => {
-  const ranges: Array<ContributionRange> = years.map((year) => ({
-    from: new Date(Date.UTC(year, 0, 1)),
-    to: new Date(Date.UTC(year, 11, 31, 23, 59, 59)),
-  }));
+  const ranges: Array<GitHubDateRange> = years.map(getGitHubYearRange);
   const repos = await fetchReposContributedTo(
     username,
     ranges,
@@ -599,7 +597,10 @@ const fetchStats = async (
     includeMergedPullRequests: include_merged_pull_requests,
     includeDiscussions: include_discussions,
     includeDiscussionsAnswers: include_discussions_answers,
-    startTime: commits_year ? `${commits_year}-01-01T00:00:00Z` : undefined,
+    startTime:
+      commits_year === undefined
+        ? undefined
+        : toGitHubDateTime(getGitHubYearRange(commits_year).from),
     ownerAffiliations: affiliations,
     includeUserRepositories: contribs_include_own_repos,
     pat,

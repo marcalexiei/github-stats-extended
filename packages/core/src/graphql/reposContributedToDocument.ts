@@ -1,3 +1,6 @@
+import type { GitHubDateRange } from "../common/date.js";
+import { toGitHubDateTime } from "../common/date.js";
+
 import type { RangeContributionsByRepoFragment } from "./generated/stats.js";
 import { graphqlDocument } from "./graphqlDocument.js";
 
@@ -13,12 +16,6 @@ interface ReposContributedToQuery {
   user: Record<`range_${number}`, RangeContributionsByRepoFragment> | null;
 }
 
-/** A date range to query for contributions. */
-interface ContributionRange {
-  from: Date;
-  to: Date;
-}
-
 /**
  * Build a query for the repositories a user contributed to within multiple time
  * ranges. One aliased `contributionsCollection` field per range, so all ranges
@@ -30,11 +27,11 @@ interface ContributionRange {
  * @param ranges Ranges to fetch, one `range_<index>` alias each.
  * @returns Document for `createGraphQLFetcher`.
  */
-const buildReposContributedToDocument = (ranges: Array<ContributionRange>) => {
+const buildReposContributedToDocument = (ranges: Array<GitHubDateRange>) => {
   const rangeFields = ranges
     .map(
       ({ from, to }, index) =>
-        `range_${index}: contributionsCollection(from: "${from.toISOString()}", to: "${to.toISOString()}") { ...RangeContributionsByRepo }`,
+        `range_${index}: contributionsCollection(from: "${toGitHubDateTime(from)}", to: "${toGitHubDateTime(to)}") { ...RangeContributionsByRepo }`,
     )
     .join("\n");
 
@@ -75,4 +72,3 @@ fragment RangeContributionsByRepo on ContributionsCollection {
 };
 
 export { buildReposContributedToDocument, MAX_REPOSITORIES_LIMIT };
-export type { ContributionRange };
