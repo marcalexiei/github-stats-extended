@@ -41,3 +41,4 @@ fragment YearContributions on ContributionsCollection {
 };
 
 export { buildContributionsDocument };
+export type { ContributionsQuery };

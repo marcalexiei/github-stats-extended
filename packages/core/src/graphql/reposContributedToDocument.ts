@@ -39,10 +39,9 @@ const buildReposContributedToDocument = (
     )
     .join("\n");
 
-  // `repositoryContributions` only ever returns repos the user owns, so it is left
-  // out rather than gated with @include: an excluded field still counts toward the
-  // query's node cost. stats.graphql carries the directive so the generated type
-  // marks the field optional.
+  // `repositoryContributions` only ever returns repos the user owns,
+  // so it is left out rather than gated with @include: an excluded field still counts toward the query's node cost.
+  // stats.graphql carries the directive so the generated type marks the field optional.
   const ownRepoField = includeOwnRepos
     ? `repositoryContributions(first: $maxRepositories) {
     nodes {
@@ -84,3 +83,4 @@ fragment RangeContributionsByRepo on ContributionsCollection {
 };
 
 export { buildReposContributedToDocument, MAX_REPOSITORIES_LIMIT };
+export type { ReposContributedToQuery };
