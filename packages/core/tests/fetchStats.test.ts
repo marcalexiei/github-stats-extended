@@ -16,6 +16,7 @@ const data_stats = {
   data: {
     user: {
       name: "Anurag Hazra",
+      login: "anuraghazra",
       repositoriesContributedTo: { totalCount: 61 },
       contributionsCollection: {
         contributionYears: [2022, 2024],
@@ -119,6 +120,8 @@ const data_contributions = {
   },
 };
 
+// `repositoryContributions` only ever returns repos the user owns, so every entry
+// under it is `anuraghazra/*`. It repeats across ranges to exercise de-duplication.
 const data_repos_contributed_to = {
   data: {
     user: {
@@ -131,7 +134,9 @@ const data_repos_contributed_to = {
         ],
         pullRequestContributionsByRepository: [],
         repositoryContributions: {
-          nodes: [{ repository: { nameWithOwner: "org/repo3" } }],
+          nodes: [
+            { repository: { nameWithOwner: "anuraghazra/created-repo" } },
+          ],
         },
       },
       range_1: {
@@ -143,7 +148,9 @@ const data_repos_contributed_to = {
           { repository: { nameWithOwner: "org/repo4" } },
         ],
         repositoryContributions: {
-          nodes: [{ repository: { nameWithOwner: "org/repo2" } }],
+          nodes: [
+            { repository: { nameWithOwner: "anuraghazra/created-repo" } },
+          ],
         },
       },
     },
@@ -855,7 +862,8 @@ describe("Test fetchStats", () => {
       false, // contribs_include_own_repos
     );
 
-    expect(stats.allTimeContributedTo).toBe(4);
+    // org/repo1, org/repo2 and org/repo4; both anuraghazra/* repos are filtered out
+    expect(stats.allTimeContributedTo).toBe(3);
   });
 
   it("should include own repos in all-time contributed-to count when contribs_include_own_repos is true", async () => {
@@ -882,6 +890,52 @@ describe("Test fetchStats", () => {
 
     expect(stats.allTimeContributedTo).toBe(5);
   });
+
+  it.each([
+    { contribsIncludeOwnRepos: false, shouldSelect: false },
+    { contribsIncludeOwnRepos: true, shouldSelect: true },
+  ])(
+    "should select repositoryContributions only when own repos are wanted (own repos: $contribsIncludeOwnRepos)",
+    async ({ contribsIncludeOwnRepos, shouldSelect }) => {
+      let contributedToQuery = "";
+
+      mock.reset();
+      mock.onPost("https://api.github.com/graphql").reply((cfg) => {
+        const req = JSON.parse(cfg.data as string) as { query: string };
+        if (req.query.includes("userReposContributedTo")) {
+          contributedToQuery = req.query;
+          return [200, data_repos_contributed_to];
+        }
+        return [200, data_stats];
+      });
+
+      await fetchStats(
+        "anuraghazra",
+        false,
+        [],
+        false,
+        false,
+        false,
+        undefined,
+        [],
+        [],
+        false,
+        false,
+        false,
+        false,
+        false,
+        [],
+        false,
+        true, // include_all_time_contribs
+        contribsIncludeOwnRepos,
+      );
+
+      // an @include(if: false) field would still count toward the node cost
+      expect(contributedToQuery.includes("repositoryContributions")).toBe(
+        shouldSelect,
+      );
+    },
+  );
 
   it("should split saturated ranges until 1-day", async () => {
     const saturatedRange = {
@@ -933,6 +987,7 @@ describe("Test fetchStats", () => {
     );
 
     expect(stats.allTimeContributedTo).toBe(100);
-    expect(requestCount).toEqual(11);
+    // rounds past MAX_RANGES_PER_REQUEST ranges take more than one request each
+    expect(requestCount).toEqual(23);
   });
 });
