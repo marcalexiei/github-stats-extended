@@ -16,7 +16,6 @@ const CARD_TYPE_BY_PATH: Record<string, CardType> = {
 const RAW_CARD_IMAGE = /<img(?![^>]*\bloading=)(?=[^>]*\bsrc="\/api)/g;
 
 /* `styles/starlight-theme.css` styles them; keep the class names in sync with that file. */
-const CARD_PREVIEW_LINK = "card-preview-link";
 const CARD_PREVIEW_LIGHT = "card-preview-light";
 const CARD_PREVIEW_DARK = "card-preview-dark";
 
@@ -39,25 +38,22 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
   /** Opening a preview shows how the card is configured. */
   const linked = (
     image: ElementNode,
-    classes: Array<string> = [],
+    className?: Array<string>,
   ): ElementNode => ({
     type: "element",
     tagName: "a",
-    properties: {
-      href: image.properties.src,
-      className: [CARD_PREVIEW_LINK, ...classes],
-    },
+    properties: { href: image.properties.src, className },
     children: [image],
   });
 
-  /** Each image in the tree, with the siblings and the link the markdown put it in. */
+  /** Each image in the tree, with its siblings and whether the markdown linked it. */
   const images: Array<{
     image: ElementNode;
     siblings: Array<Node>;
-    link: ElementNode | null;
+    insideLink: boolean;
   }> = [];
 
-  function collect(children: Array<Node>, link: ElementNode | null) {
+  function collect(children: Array<Node>, insideLink: boolean) {
     for (const child of children) {
       // `rehype-raw` runs after this plugin, so a card written as HTML is still text.
       if (child.type === "raw") {
@@ -73,18 +69,18 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
       }
 
       if (child.tagName === "img") {
-        images.push({ image: child, siblings: children, link });
+        images.push({ image: child, siblings: children, insideLink });
         continue;
       }
 
-      collect(child.children, child.tagName === "a" ? child : link);
+      collect(child.children, insideLink || child.tagName === "a");
     }
   }
 
-  // Collected up front, so a link built below is never mistaken for the markdown's own.
-  collect(tree.children, null);
+  // Collected before anything is rewritten, so a copy added below is never revisited.
+  collect(tree.children, false);
 
-  for (const { image, siblings, link } of images) {
+  for (const { image, siblings, insideLink } of images) {
     const { properties } = image;
     const src = properties.src;
     if (typeof src !== "string") {
@@ -100,15 +96,6 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
     // A hidden copy has no layout box, so only the shown theme is fetched.
     properties.loading ??= "lazy";
 
-    /** The markdown's link, or one built around the copy; either way it is marked. */
-    const wrap = (copy: ElementNode, classes: Array<string> = []) => {
-      if (link === null) {
-        return linked(copy, classes);
-      }
-      link.properties.className = [CARD_PREVIEW_LINK];
-      return copy;
-    };
-
     const index = siblings.indexOf(image);
 
     // A named theme is the point of the preview, so leave it as one image.
@@ -117,7 +104,9 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
       searchParams.has("theme_light") ||
       searchParams.has("theme_dark")
     ) {
-      siblings.splice(index, 1, wrap(image));
+      if (!insideLink) {
+        siblings.splice(index, 1, linked(image));
+      }
       continue;
     }
 
@@ -136,7 +125,7 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
         },
       };
       // The class goes on the link too, so a hidden copy leaves nothing focusable behind.
-      return wrap(copy, [className]);
+      return insideLink ? copy : linked(copy, [className]);
     };
 
     siblings.splice(index, 1, themed("light"), themed("dark"));

@@ -45,23 +45,19 @@ test("a preview links to itself, unless the markdown links it elsewhere", async 
 
   // Opening a preview shows its query string, so each copy links to its own theme.
   await expect(
-    page.locator(
-      'main a.card-preview-link.card-preview-light:has(img[alt="Top Langs"])',
-    ),
+    page.locator('main a.card-preview-light:has(img[alt="Top Langs"])'),
   ).toHaveAttribute(
     "href",
     "/api/top-langs?username=anuraghazra&langs_count=4&theme=light_github",
   );
 
   // The repo card already points at the repo it describes, which is more useful.
-  const repoCardLink = page.locator('main a:has(img[alt="Readme Card"])');
-  await expect(repoCardLink).toHaveAttribute(
+  await expect(
+    page.locator('main a:has(img[alt="Readme Card"])'),
+  ).toHaveAttribute(
     "href",
     "https://github.com/anuraghazra/github-readme-stats",
   );
-
-  // A link the markdown wrote is marked too, so it shrink-wraps like the rest.
-  await expect(repoCardLink).toHaveClass("card-preview-link");
 });
 
 test("a preview that names a theme stays a single image", async ({ page }) => {
