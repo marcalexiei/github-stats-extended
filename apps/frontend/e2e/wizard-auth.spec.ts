@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import type { Page } from "@playwright/test";
 
+import { stubCardApi } from "./stubCardApi";
+
 /**
  * Puts the SPA into an authenticated state without contacting GitHub by
  * stubbing the OAuth code exchange and the follow-up user-access lookup:
@@ -26,6 +28,10 @@ async function mockAuthEndpoints(page: Page): Promise<void> {
 }
 
 test.describe("the wizard auth-driven stage transition", () => {
+  test.beforeEach(async ({ page }) => {
+    await stubCardApi(page);
+  });
+
   test("auto-advances from Login to Select a Card once authenticated", async ({
     page,
   }) => {

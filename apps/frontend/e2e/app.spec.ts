@@ -1,6 +1,12 @@
 import { expect, test } from "@playwright/test";
 
+import { stubCardApi } from "./stubCardApi";
+
 const REPO_URL = "https://github.com/stats-organization/github-stats-extended";
+
+test.beforeEach(async ({ page }) => {
+  await stubCardApi(page);
+});
 
 test("load initial page correctly", async ({ page }) => {
   await page.goto("");

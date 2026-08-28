@@ -116,11 +116,5 @@ export default defineConfig({
         },
       ],
     },
-    // The backend code the wizard reuses imports `pg`, which never runs in the browser.
-    build: {
-      rolldownOptions: {
-        external: ["pg"],
-      },
-    },
   },
 });
