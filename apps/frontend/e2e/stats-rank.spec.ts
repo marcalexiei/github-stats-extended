@@ -1,11 +1,5 @@
 import { expect, test } from "@playwright/test";
 
-import { stubCardApi } from "./stubCardApi";
-
-test.beforeEach(async ({ page }) => {
-  await stubCardApi(page);
-});
-
 test("selecting 'None' progress style hides the rank circle", async ({
   page,
 }) => {
