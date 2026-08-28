@@ -33,10 +33,8 @@ const RELATIVE_BASE = "https://cards.invalid";
  */
 export const rehypeCardImages: RehypePlugin = () => (tree) => {
   // Typed off the tree so the plugin needs no hast types of its own.
-  type ElementNode = Extract<
-    (typeof tree.children)[number],
-    { tagName: string }
-  >;
+  type Node = (typeof tree.children)[number];
+  type ElementNode = Extract<Node, { tagName: string }>;
 
   /** Opening a preview shows how the card is configured. */
   const linked = (
@@ -52,8 +50,15 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
     children: [image],
   });
 
-  function walk(children: typeof tree.children, link: ElementNode | null) {
-    for (const [index, child] of children.entries()) {
+  /** Each image in the tree, with the siblings and the link the markdown put it in. */
+  const images: Array<{
+    image: ElementNode;
+    siblings: Array<Node>;
+    link: ElementNode | null;
+  }> = [];
+
+  function collect(children: Array<Node>, link: ElementNode | null) {
+    for (const child of children) {
       // `rehype-raw` runs after this plugin, so a card written as HTML is still text.
       if (child.type === "raw") {
         child.value = child.value.replaceAll(
@@ -67,64 +72,73 @@ export const rehypeCardImages: RehypePlugin = () => (tree) => {
         continue;
       }
 
-      if (child.tagName !== "img") {
-        walk(child.children, child.tagName === "a" ? child : link);
+      if (child.tagName === "img") {
+        images.push({ image: child, siblings: children, link });
         continue;
       }
 
-      const { properties } = child;
-      const src = properties.src;
-      if (typeof src !== "string") {
-        continue;
-      }
-
-      const { pathname, search, searchParams } = new URL(src, RELATIVE_BASE);
-      const cardType = CARD_TYPE_BY_PATH[pathname];
-      if (cardType === undefined) {
-        continue;
-      }
-
-      // A hidden copy has no layout box, so only the shown theme is fetched.
-      properties.loading ??= "lazy";
-
-      // Markdown writes no class of its own; a link built below already has one.
-      if (link !== null) {
-        link.properties.className ??= [CARD_PREVIEW_LINK];
-      }
-
-      // A named theme is the point of the preview, so leave it as one image.
-      if (
-        searchParams.has("theme") ||
-        searchParams.has("theme_light") ||
-        searchParams.has("theme_dark")
-      ) {
-        if (link === null) {
-          children.splice(index, 1, linked(child));
-        }
-        continue;
-      }
-
-      const category = CATEGORY_BY_CARD_TYPE[cardType];
-
-      const themed = (variant: "light" | "dark") => {
-        const className =
-          variant === "dark" ? CARD_PREVIEW_DARK : CARD_PREVIEW_LIGHT;
-        const image = {
-          ...child,
-          properties: {
-            ...properties,
-            // Appended, not re-serialized, so the rest of the query survives verbatim.
-            src: `${src}${search === "" ? "?" : "&"}theme=${getCardThemeDefault(variant === "dark", category)}`,
-            className: [className],
-          },
-        };
-        return link === null ? linked(image, [className]) : image;
-      };
-
-      // Both copies name a theme, so the one the iterator lands on next is skipped.
-      children.splice(index, 1, themed("light"), themed("dark"));
+      collect(child.children, child.tagName === "a" ? child : link);
     }
   }
 
-  walk(tree.children, null);
+  // Collected up front, so a link built below is never mistaken for the markdown's own.
+  collect(tree.children, null);
+
+  for (const { image, siblings, link } of images) {
+    const { properties } = image;
+    const src = properties.src;
+    if (typeof src !== "string") {
+      continue;
+    }
+
+    const { pathname, search, searchParams } = new URL(src, RELATIVE_BASE);
+    const cardType = CARD_TYPE_BY_PATH[pathname];
+    if (cardType === undefined) {
+      continue;
+    }
+
+    // A hidden copy has no layout box, so only the shown theme is fetched.
+    properties.loading ??= "lazy";
+
+    /** The markdown's link, or one built around the copy; either way it is marked. */
+    const wrap = (copy: ElementNode, classes: Array<string> = []) => {
+      if (link === null) {
+        return linked(copy, classes);
+      }
+      link.properties.className = [CARD_PREVIEW_LINK];
+      return copy;
+    };
+
+    const index = siblings.indexOf(image);
+
+    // A named theme is the point of the preview, so leave it as one image.
+    if (
+      searchParams.has("theme") ||
+      searchParams.has("theme_light") ||
+      searchParams.has("theme_dark")
+    ) {
+      siblings.splice(index, 1, wrap(image));
+      continue;
+    }
+
+    const category = CATEGORY_BY_CARD_TYPE[cardType];
+
+    const themed = (variant: "light" | "dark") => {
+      const className =
+        variant === "dark" ? CARD_PREVIEW_DARK : CARD_PREVIEW_LIGHT;
+      const copy = {
+        ...image,
+        properties: {
+          ...properties,
+          // Appended, not re-serialized, so the rest of the query survives verbatim.
+          src: `${src}${search === "" ? "?" : "&"}theme=${getCardThemeDefault(variant === "dark", category)}`,
+          className: [className],
+        },
+      };
+      // The class goes on the link too, so a hidden copy leaves nothing focusable behind.
+      return wrap(copy, [className]);
+    };
+
+    siblings.splice(index, 1, themed("light"), themed("dark"));
+  }
 };
