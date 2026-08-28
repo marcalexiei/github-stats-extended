@@ -19,11 +19,6 @@
   --sl-color-bg-sidebar: #0d1117;
 }
 
-/* Prose styles render images as blocks; shrink-wrap any link that wraps one. */
-a:has(> img) {
-  display: inline-block;
-}
-
 /* Prose styles render images as blocks, so the row is explicit. */
 .card-row {
   display: flex;
@@ -40,6 +35,14 @@ a:has(> img) {
 .card-row img {
   max-width: 100%;
   height: auto;
+}
+
+/*
+ * Prose styles render images as blocks,  so a link around a card would otherwise stretch the whole column. 
+ * `plugins/rehypeCardImages.ts` writes this class; keep the class name in sync with that file.
+ */
+.card-preview-link {
+  display: inline-block;
 }
 
 /*
