@@ -92,7 +92,7 @@ export default async (
       }),
     };
   }
-  const commitsYear =
+  const commitsYearParsed =
     commits_year === undefined ? undefined : Number(commits_year);
 
   try {
@@ -111,7 +111,7 @@ export default async (
         showStats.includes("prs_merged_percentage"),
       showStats.includes("discussions_started"),
       showStats.includes("discussions_answered"),
-      commitsYear,
+      commitsYearParsed,
       repository,
       repoOwner,
       showStats.includes("prs_authored"),
@@ -139,7 +139,7 @@ export default async (
           card_width: parseInt(card_width, 10),
           hide_rank: parseBoolean(hide_rank),
           include_all_commits: parseBoolean(include_all_commits),
-          commits_year: commitsYear,
+          commits_year: commitsYearParsed,
           line_height,
           text_bold: parseBoolean(text_bold),
           custom_title,
