@@ -95,9 +95,7 @@ export function DisplayStage({
               Download PNG
             </Button>
           </div>
-          {!!guestHint && (
-            <div className="pt-10 pl-10 pr-10 text-center">{guestHint}</div>
-          )}
+          {!!guestHint && <div className="pt-10 pl-10 pr-10">{guestHint}</div>}
         </div>
       </div>
       <div className="w-full lg:w-3/5 md:w-1/2 object-center pt-5 md:pt-0 pl-0 md:pl-5 lg:pl-0">
