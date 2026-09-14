@@ -27,7 +27,7 @@ export function LoginAccountDeleteModal(
       aria-labelledby={titleId}
       onClose={onClose}
     >
-      <div className="modal-box w-96">
+      <div className="modal-box w-96 text-base-content">
         <p id={titleId} className="mb-1 text-2xl">
           Delete Account
         </p>

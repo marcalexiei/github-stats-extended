@@ -52,8 +52,12 @@ export function NumericSection({
         disabled={disabled}
         placeholder={placeholder}
       />
-      {/* Hidden until the field is `:user-invalid`, then shown in the error colour. */}
-      <p className="validator-hint">
+      {/*
+       * Hidden until the field is `:user-invalid`, then shown in the error color.
+       * The hint reserves its box either way and adds a gap no other `Section` has.
+       * Take that back out of `Section`'s `pb-12` with `h-0`.
+       */}
+      <p className="validator-hint h-0">
         Enter a number between {min} and {max}.
       </p>
     </Section>
