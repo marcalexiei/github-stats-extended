@@ -1,10 +1,7 @@
-// @ts-expect-error type info should be added later
-import { router } from "@stats-organization/github-readme-stats-backend";
 import { loadConfigFromEnv } from "@stats-organization/github-readme-stats-core";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { JSX, Ref, RefCallback } from "react";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 import { setShouldMock } from "../../../axios-override.js";
@@ -12,7 +9,7 @@ import {
   useIsAuthenticated,
   useUserToken,
 } from "../../../redux/selectors/userSelectors.js";
-import { createMockRequest, createMockResponse } from "../../mock-http.js";
+import { renderCard } from "../../renderCard.js";
 
 interface SvgInlineProps {
   url: string;
@@ -71,7 +68,6 @@ export function SvgInline(props: SvgInlineProps): JSX.Element {
       setLoaded(false);
 
       let body: string;
-      let status;
 
       if (isAuthenticated && (!userToken || userToken === "placeholderPAT")) {
         // waiting for backend call to private-access
@@ -80,24 +76,13 @@ export function SvgInline(props: SvgInlineProps): JSX.Element {
 
       if (stage === 4 && !isAuthenticated) {
         const res = await axios.get<string>(url);
+        if (res.status >= 300) {
+          console.error("failed to fetch SVG");
+          return;
+        }
         body = res.data;
-        status = res.status;
       } else {
-        const req = createMockRequest({
-          method: "GET",
-          url,
-        });
-        const res = createMockResponse();
-        // will be solved by npm package
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        await router(req, res);
-        body = res._getBody() as string;
-        status = res._getStatusCode();
-      }
-
-      if (status >= 300) {
-        console.error("failed to fetch/generate SVG");
-        return;
+        body = (await renderCard(url)).content;
       }
 
       if (!isCurrent) {
@@ -132,13 +117,17 @@ export function SvgInline(props: SvgInlineProps): JSX.Element {
   if (forceLoading || !loaded) {
     if (compact) {
       return (
-        <Skeleton key="compact-skeleton" style={{ paddingBottom: "58%" }} />
+        <div
+          key="compact-skeleton"
+          className="skeleton w-full"
+          style={{ paddingBottom: "58%" }}
+        />
       );
     }
     // maximum dimensions of cards in SelectCard stage
     return (
-      <div className=" w-[450px]">
-        <Skeleton key="skeleton" className="h-[245px]" />
+      <div className="w-[450px]">
+        <div key="skeleton" className="skeleton h-[245px] w-full" />
       </div>
     );
   }
